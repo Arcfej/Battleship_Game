@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 public class Menu {
 	
-	private static final String SEPARATOR = "———————————————————————————————————————————————————";
+	public static final String SEPARATOR = "———————————————————————————————————————————————————";
 	
 	/**
 	 * The file path to the saved game(s).
@@ -114,8 +114,8 @@ public class Menu {
 	 * @param in The input stream through the user communicates with the program.
 	 */
 	private void newGame(Scanner in) {
-		game = new GameOfBattleships();
-		System.out.println("New game chosen");
+		game = new GameOfBattleships(this, in);
+		game.play();
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class Menu {
 	 * 
 	 * @return if the save was successful or not.
 	 */
-	private boolean saveGame() {
+	public boolean saveGame() {
 		System.out.println("TODO: save the game");
 		return false;
 	}
@@ -149,7 +149,7 @@ public class Menu {
 	 * 
 	 * @return if the deletion was successful or not.
 	 */
-	private boolean deleteSavedGame() {
+	public boolean deleteSavedGame() {
 		System.out.println("TODO: delete the saved game");
 		return false;
 	}
@@ -161,7 +161,7 @@ public class Menu {
 	 * @param name The name of the player
 	 * @return if the save was successful or not.
 	 */
-	private boolean saveScore(int score, String name) {
+	public boolean saveScore(int score, String name) {
 		System.out.println("TODO: save current score");
 		return false;
 	}
