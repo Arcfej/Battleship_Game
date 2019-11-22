@@ -40,68 +40,96 @@ public class Menu {
 		Menu menu = new Menu();
 
 		Scanner in = new Scanner(System.in);
-		
+
+		// Show the menu until the user exits the program
 		while (true) {
-			valid = menu.displayMenu(in);
+			menu.displayMenu(in);
 		}
 	}
 	
-	private boolean displayMenu(Scanner in) {
+	/**
+	 * Display the Main Menu to the user. It contains several options, all of them starts a game function.
+	 * One of them is to exit the program.
+	 * 
+	 * @param in The input stream through the user communicates with the program.
+	 */
+	private void displayMenu(Scanner in) {
+		// Display the menu options
 		System.out.println();
 		System.out.println("Choose one of the options:");
 		System.out.println(SEPARATOR);
 		System.out.println("1) New Game");
+		// Display the Load Game option only if there is a saved game.
 		if (hasSavedGame) {
 			System.out.println("2) Load Game");
 		}
 		System.out.println("3) Leaderboard");
 		System.out.println("0) Exit");
 		System.out.println(SEPARATOR);
-		System.out.println();
 		
+		// Validate the input from the user.
 		if (in.hasNextInt()) {
 			switch (in.nextInt()) {
+				// Exit the game
 				case 0:
 					System.exit(0);
 					break;
+				// Start a new game
 				case 1:
-					newGame();
+					newGame(in);
 					break;
+				// Show the leaderboard
 				case 3:
 					showLeaderboard();
 					break;
+				// Load the saved game if there is any
 				case 2:
 					if (hasSavedGame) {
-						loadGame();
+						loadGame(in);
 						break;
 					}
+				// Display error message in any other case
 				default:
 					invalidMenuChoice();
-					return false;
 			}
 		} else {
 			in.next();
 			invalidMenuChoice();
-			return false;
 		}
-		return true;
 	}
 	
+	/**
+	 * Called when the user entered an invalid command in the Main Menu.
+	 * Displays an error message to the user.
+	 */
 	private void invalidMenuChoice() {
 		System.out.println();
 		System.out.println(SEPARATOR);
 		System.out.println("Valid inputs are numbers listed bellow.");
 	}
 	
-	private void newGame() {
+	/**
+	 * Start a new game.
+	 * 
+	 * @param in The input stream through the user communicates with the program.
+	 */
+	private void newGame(Scanner in) {
 		game = new GameOfBattleships();
 		System.out.println("New game chosen");
 	}
 	
-	private void loadGame() {
+	/**
+	 * Load an existing saved game from the disk.
+	 * 
+	 * @param in The input stream through the user communicates with the program.
+	 */
+	private void loadGame(Scanner in) {
 		System.out.println("Load game chosen");
 	}
 	
+	/**
+	 * Show the leaderboard with the scores from the previous plays.
+	 */
 	private void showLeaderboard() {
 		System.out.println("Show leaderboard chosen");
 	}
