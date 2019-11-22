@@ -133,4 +133,36 @@ public class Menu {
 	private void showLeaderboard() {
 		System.out.println("Show leaderboard chosen");
 	}
+	
+	/**
+	 * Save the current state of the game.
+	 * 
+	 * @return if the save was successful or not.
+	 */
+	private boolean saveGame() {
+		System.out.println("TODO: save the game");
+		return false;
+	}
+	
+	/**
+	 * Delete the saved game.
+	 * 
+	 * @return if the deletion was successful or not.
+	 */
+	private boolean deleteSavedGame() {
+		System.out.println("TODO: delete the saved game");
+		return false;
+	}
+	
+	/**
+	 * Save the score with the given details.
+	 * 
+	 * @param score The score of the player
+	 * @param name The name of the player
+	 * @return if the save was successful or not.
+	 */
+	private boolean saveScore(int score, String name) {
+		System.out.println("TODO: save current score");
+		return false;
+	}
 }
