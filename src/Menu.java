@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 public class Menu {
 	
-	public static final String SEPARATOR = "———————————————————————————————————————————————————";
+	private static final String SEPARATOR = "———————————————————————————————————————————————————";
 	
 	/**
 	 * The file path to the saved game(s).
@@ -109,17 +109,17 @@ public class Menu {
 	}
 	
 	/**
-	 * Starts a new game.
+	 * Start a new game.
 	 * 
 	 * @param in The input stream through the user communicates with the program.
 	 */
 	private void newGame(Scanner in) {
-		game = new GameOfBattleships(this, in);
-		game.play();
+		game = new GameOfBattleships();
+		System.out.println("New game chosen");
 	}
 	
 	/**
-	 * Loads an existing saved game from the disk.
+	 * Load an existing saved game from the disk.
 	 * 
 	 * @param in The input stream through the user communicates with the program.
 	 */
@@ -128,40 +128,40 @@ public class Menu {
 	}
 	
 	/**
-	 * Shows the leaderboard with the top 10 scores from the previous plays.
+	 * Show the leaderboard with the scores from the previous plays.
 	 */
 	private void showLeaderboard() {
 		System.out.println("Show leaderboard chosen");
 	}
 	
 	/**
-	 * Saves the current state of the game.
+	 * Save the current state of the game.
 	 * 
 	 * @return if the save was successful or not.
 	 */
-	public boolean saveGame() {
+	private boolean saveGame() {
 		System.out.println("TODO: save the game");
 		return false;
 	}
 	
 	/**
-	 * Deletes the saved game.
+	 * Delete the saved game.
 	 * 
 	 * @return if the deletion was successful or not.
 	 */
-	public boolean deleteSavedGame() {
+	private boolean deleteSavedGame() {
 		System.out.println("TODO: delete the saved game");
 		return false;
 	}
 	
 	/**
-	 * Saves the score with the given details.
+	 * Save the score with the given details.
 	 * 
 	 * @param score The score of the player
 	 * @param name The name of the player
 	 * @return if the save was successful or not.
 	 */
-	public boolean saveScore(int score, String name) {
+	private boolean saveScore(int score, String name) {
 		System.out.println("TODO: save current score");
 		return false;
 	}
