@@ -109,7 +109,7 @@ public class Menu {
 	}
 	
 	/**
-	 * Start a new game.
+	 * Starts a new game.
 	 * 
 	 * @param in The input stream through the user communicates with the program.
 	 */
@@ -119,7 +119,7 @@ public class Menu {
 	}
 	
 	/**
-	 * Load an existing saved game from the disk.
+	 * Loads an existing saved game from the disk.
 	 * 
 	 * @param in The input stream through the user communicates with the program.
 	 */
@@ -128,14 +128,14 @@ public class Menu {
 	}
 	
 	/**
-	 * Show the leaderboard with the scores from the previous plays.
+	 * Shows the leaderboard with the top 10 scores from the previous plays.
 	 */
 	private void showLeaderboard() {
 		System.out.println("Show leaderboard chosen");
 	}
 	
 	/**
-	 * Save the current state of the game.
+	 * Saves the current state of the game.
 	 * 
 	 * @return if the save was successful or not.
 	 */
@@ -145,7 +145,7 @@ public class Menu {
 	}
 	
 	/**
-	 * Delete the saved game.
+	 * Deletes the saved game.
 	 * 
 	 * @return if the deletion was successful or not.
 	 */
@@ -155,7 +155,7 @@ public class Menu {
 	}
 	
 	/**
-	 * Save the score with the given details.
+	 * Saves the score with the given details.
 	 * 
 	 * @param score The score of the player
 	 * @param name The name of the player

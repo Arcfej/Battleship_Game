@@ -1,13 +1,44 @@
 import java.util.Scanner;
 
+/**
+ * Represents a Battleship game. Handles all the interactions between the players.
+ * 
+ * @author MiklosMayer
+ *
+ */
 public class GameOfBattleships {
 	
+	/**
+	 * The menu of the game which handles e.g. the saving of the game state.
+	 */
 	private final Menu menu;
+	
+	/**
+	 * The input stream through the user communicates with the program.
+	 */
 	private Scanner in;
+	
+	/**
+	 * The number of rounds the players played.
+	 */
 	private int rounds;
+	
+	/**
+	 * The player who is firing on the other
+	 */
 	private Player activePlayer;
+	
+	/**
+	 * The player who is taking the fire. 
+	 */
 	private Player passivePlayer;
 
+	/**
+	 * Default constructor of the class.
+	 * 
+	 * @param menu The menu of the game which handles e.g. the saving of the game state.
+	 * @param in The input stream through the user communicates with the program.
+	 */
 	public GameOfBattleships(Menu menu, Scanner in) {
 		this.menu = menu;
 		this.in = in;
@@ -16,10 +47,15 @@ public class GameOfBattleships {
 		passivePlayer = new Player();
 	}
 	
+	/**
+	 * The whole cycle of an entire game, from placing the ships to winning the game.
+	 */
 	public void play() {
+		// Placing the ships.
 		activePlayer.placeShips();
 		passivePlayer.placeShips();
 		
+		// Firing on eachother.
 		boolean end = false;
 		while (!end) {
 			menu.saveGame();
@@ -57,11 +93,17 @@ public class GameOfBattleships {
 			}
 		}
 		
+		// Wrap up the game in the end (saving score, delete saved game).
 		System.out.println("TODO: calculate score for winner");
 		menu.deleteSavedGame();
 		System.out.println("TODO: what if delete unsuccessful?");
 	}
 	
+	/**
+	 * Ask for coordinates from the active player to fire upon.
+	 * 
+	 * @return the position of the target.
+	 */
 	private Position askCoordinate() {
 		System.out.println("What is your target?");
 		System.out.println(Menu.SEPARATOR);
@@ -70,23 +112,23 @@ public class GameOfBattleships {
 		return new Position();
 	}
 
+	/**
+	 * Display the battlefields to the user(s).
+	 */
 	private void displayGrids() {
 		System.out.println("TODO: display the battlefield");
 	}
 	
-	private void endGame() {
-		System.out.println("TODO: end game");
-	}
-	
-	public int fire(Position position) {
-		System.out.println("TODO: implement fire in GameOfBattleships");
-		return -1;
-	}
-	
+	/**
+	 * @return the number of rounds the players played so far.
+	 */
 	public int getRounds() {
 		return rounds;
 	}
 	
+	/**
+	 * Switch the active and passive player of the game.
+	 */
 	public void switchPlayer() {
 		Player holder = activePlayer;
 		activePlayer = passivePlayer;

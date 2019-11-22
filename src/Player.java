@@ -1,9 +1,15 @@
 import java.util.Scanner;
 
+/**
+ * Represents a player of the Battleship game.
+ * 
+ * @author MiklosMayer
+ *
+ */
 public class Player {
 
 	public Player() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public void placeShips() {
