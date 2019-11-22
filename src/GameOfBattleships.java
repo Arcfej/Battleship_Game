@@ -73,7 +73,7 @@ public class GameOfBattleships {
 				case 0:
 					System.out.println("TODO: increase misses");
 					rounds++;
-					switchPlayer();
+					switchPlayers();
 					break;
 				// Hit
 				case 1:
@@ -131,7 +131,7 @@ public class GameOfBattleships {
 	/**
 	 * Switch the active and passive player of the game.
 	 */
-	public void switchPlayer() {
+	public void switchPlayers() {
 		Player holder = activePlayer;
 		activePlayer = passivePlayer;
 		passivePlayer = holder;
