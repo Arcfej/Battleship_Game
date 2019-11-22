@@ -72,6 +72,8 @@ public class GameOfBattleships {
 				// Missed
 				case 0:
 					System.out.println("TODO: increase misses");
+					rounds++;
+					switchPlayer();
 					break;
 				// Hit
 				case 1:
