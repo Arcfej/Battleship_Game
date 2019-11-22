@@ -55,7 +55,7 @@ public class GameOfBattleships {
 		activePlayer.placeShips();
 		passivePlayer.placeShips();
 		
-		// Firing on eachother.
+		// Firing on each other.
 		boolean end = false;
 		while (!end) {
 			menu.saveGame();
