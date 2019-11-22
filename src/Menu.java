@@ -1,4 +1,3 @@
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,33 +29,7 @@ public class Menu {
 
 	public Menu() {
 		hasSavedGame = Files.exists(SAVE_PATH);
-		
-		Scanner in = new Scanner(System.in);
-		
-		boolean valid = false;
-		while (!valid) {
-			valid = true;
-			displayMenu();
-			if (in.hasNextInt()) {
-				switch (in.nextInt()) {
-				case 0:
-					System.exit(0);
-					break;
-				case 1:
-		//			newGame();
-					break;
-				case 2:
-					if (hasSavedGame) {
-		//				loadGame();
-						break;
-					} 
-				default:
-					break;
-				}
-			} else {
-				System.out.println("Valid inputs are numbers listed bellow.");
-			}
-		}
+		game = null;
 	}
 
 	/**
@@ -65,10 +38,15 @@ public class Menu {
 	 */
 	public static void main(String[] args) {
 		Menu menu = new Menu();
-		System.out.println(SAVE_PATH.toString());
+
+		Scanner in = new Scanner(System.in);
+		
+		while (true) {
+			valid = menu.displayMenu(in);
+		}
 	}
 	
-	private void displayMenu() {
+	private boolean displayMenu(Scanner in) {
 		System.out.println();
 		System.out.println("Choose one of the options:");
 		System.out.println(SEPARATOR);
@@ -80,5 +58,51 @@ public class Menu {
 		System.out.println("0) Exit");
 		System.out.println(SEPARATOR);
 		System.out.println();
+		
+		if (in.hasNextInt()) {
+			switch (in.nextInt()) {
+				case 0:
+					System.exit(0);
+					break;
+				case 1:
+					newGame();
+					break;
+				case 3:
+					showLeaderboard();
+					break;
+				case 2:
+					if (hasSavedGame) {
+						loadGame();
+						break;
+					}
+				default:
+					invalidMenuChoice();
+					return false;
+			}
+		} else {
+			in.next();
+			invalidMenuChoice();
+			return false;
+		}
+		return true;
+	}
+	
+	private void invalidMenuChoice() {
+		System.out.println();
+		System.out.println(SEPARATOR);
+		System.out.println("Valid inputs are numbers listed bellow.");
+	}
+	
+	private void newGame() {
+		game = new GameOfBattleships();
+		System.out.println("New game chosen");
+	}
+	
+	private void loadGame() {
+		System.out.println("Load game chosen");
+	}
+	
+	private void showLeaderboard() {
+		System.out.println("Show leaderboard chosen");
 	}
 }
