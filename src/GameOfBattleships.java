@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -55,19 +56,31 @@ public class GameOfBattleships {
 		activePlayer.placeShips();
 		passivePlayer.placeShips();
 		
-		// Firing on each other.
+		// Loop: Firing on each other.
 		boolean end = false;
 		while (!end) {
 			menu.saveGame();
 			System.out.println("TODO: what if save unsuccessful?");
-			Position target;
+			System.out.println("TODO: AI choose its target differently");
+			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+			Position target = null;
+			// Loop: get a valid input from the user
 			while (true) {
-				target = askCoordinate();
-				if (target != null) {
-					System.out.println("TODO: check if the target is previously fired upon");
-					break;
+				try {
+					target = askCoordinate();
+				} catch (InputMismatchException e) {
+					// Exit the game if the user would like to.
+					if (e.getMessage().equals("Exit")) return;
+					// Continue asking a valid input from the user
+					else {
+					    System.out.println("\nNot a valid target. (For exit, type in 'Exit'");
+                        continue;
+                    }
 				}
+				System.out.println("TODO: check if the target is previously fired upon");
+				break;
 			}
+			// Fire on the target provided by the player
 			switch(passivePlayer.takeFire(target)) {
 				// Missed
 				case 0:
@@ -105,13 +118,19 @@ public class GameOfBattleships {
 	 * Ask for coordinates from the active player to fire upon.
 	 * 
 	 * @return the position of the target.
+	 * @throws InputMismatchException when the input provided by the user is not a coordinate.
+	 * 								  The exception contains the input in its message.
 	 */
-	private Position askCoordinate() {
+	private Position askCoordinate() throws InputMismatchException {
+		System.out.println(Menu.SEPARATOR);
 		System.out.println("What is your target?");
 		System.out.println(Menu.SEPARATOR);
-		in.next();
-		System.out.println("TODO: validate target");
-		return new Position();
+		String input = in.nextLine();
+		try {
+			return new Position(input);
+		} catch (IllegalArgumentException e) {
+			throw new InputMismatchException(input);
+		}
 	}
 
 	/**
