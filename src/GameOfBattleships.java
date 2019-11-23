@@ -8,8 +8,18 @@ import java.util.Scanner;
  *
  */
 public class GameOfBattleships {
-	
-	/**
+
+    /**
+     * The number of rows of the battleship gamefield.
+     */
+    public static final int NUMBER_OF_ROWS = 10;
+
+    /**
+     * The number of Columns of the battleship gamefield.
+     */
+    public static final int NUMBER_OF_COLUMNS = 10;
+
+    /**
 	 * The menu of the game which handles e.g. the saving of the game state.
 	 */
 	private final Menu menu;
@@ -122,7 +132,7 @@ public class GameOfBattleships {
 	 * 								  The exception contains the input in its message.
 	 */
 	private Position askCoordinate() throws InputMismatchException {
-		System.out.println("What is your target?");
+		System.out.println("What is your target? (e.g. 'A1'");
 		System.out.println(Menu.SEPARATOR);
 		String input = in.nextLine();
 		try {
