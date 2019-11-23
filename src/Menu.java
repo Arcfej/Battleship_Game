@@ -27,7 +27,7 @@ public class Menu {
 	 */
 	private boolean hasSavedGame;
 
-	public Menu() {
+	private Menu() {
 		hasSavedGame = Files.exists(SAVE_PATH);
 		game = null;
 	}
@@ -41,7 +41,7 @@ public class Menu {
 
 		Scanner in = new Scanner(System.in);
 
-		// Show the menu until the user exits the program
+		// Show the menu until the user exits the program in displayMenu()
 		while (true) {
 			menu.displayMenu(in);
 		}

@@ -131,7 +131,7 @@ public class GameOfBattleships {
 	/**
 	 * Switch the active and passive player of the game.
 	 */
-	public void switchPlayers() {
+	private void switchPlayers() {
 		Player holder = activePlayer;
 		activePlayer = passivePlayer;
 		passivePlayer = holder;
