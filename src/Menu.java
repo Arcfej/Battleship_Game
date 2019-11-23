@@ -69,7 +69,10 @@ public class Menu {
 		
 		// Validate the input from the user.
 		if (in.hasNextInt()) {
-			switch (in.nextInt()) {
+			int command = in.nextInt();
+			// Take the scanner to the next line after reading the number.
+			in.nextLine();
+			switch (command) {
 				// Exit the game
 				case 0:
 					System.exit(0);
@@ -93,7 +96,7 @@ public class Menu {
 					invalidMenuChoice();
 			}
 		} else {
-			in.next();
+			in.nextLine();
 			invalidMenuChoice();
 		}
 	}
