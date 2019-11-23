@@ -10,8 +10,8 @@ import java.util.Scanner;
  */
 public class Menu {
 	
-	public static final String SEPARATOR = "———————————————————————————————————————————————————";
-	
+	public static final String SEPARATOR = "—————————————————————————————————————————————————————————————";
+
 	/**
 	 * The file path to the saved game(s).
 	 */
