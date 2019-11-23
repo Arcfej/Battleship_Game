@@ -11,43 +11,43 @@ public class Position {
 		position = position.toUpperCase();
 		char[] coordinates = position.toCharArray();
 		if (validatePosition(coordinates)) {
-			row = calculateRow(coordinates);
 			column = calculateColumn(coordinates);
+			row = calculateRow(coordinates);
 		} else {
 			throw new IllegalArgumentException("Please use a valid coordinate as argument for the Position class, like 'B10' or 'b10'.\nCoordinates are valid from A - j or a - j and 1 - 10 .\nYou can validate the argument with the validatePosition() method.");
 		}
 	}
 
 	private boolean validatePosition(char[] input) {
-		return validateInputLength(input) && validateColumn(input) && validateRow(input);
+		return validateInputLength(input) && validateRow(input) && validateColumn(input);
 	}
 
 	private boolean validateInputLength(char[] input) {
 		return input.length >= 2 && input.length <= 3;
 	}
 
-	private boolean validateRow(char[] input) {
-		if (!validateInputLength(input)) return false;
-		int row = calculateRow(input);
-		return row >= 0 && 9 >= row;
-	}
-
 	private boolean validateColumn(char[] input) {
 		if (!validateInputLength(input)) return false;
-		int column;
+		int column = calculateColumn(input);
+		return column > 0 && column <= NUMBER_OF_COLUMNS;
+	}
+
+	private boolean validateRow(char[] input) {
+		if (!validateInputLength(input)) return false;
+		int row;
 		try {
-			column = calculateColumn(input);
+			row = calculateRow(input);
 		} catch (NumberFormatException e) {
 			return false;
 		}
-		return column >= 0 && column <= 10;
-	}
-
-	private int calculateRow(char[] input) {
-		return input[0] - 'A';
+		return row > 0 && row <= NUMBER_OF_ROWS;
 	}
 
 	private int calculateColumn(char[] input) {
+		return input[0] - 'A' + 1;
+	}
+
+	private int calculateRow(char[] input) {
 		try {
 			return Integer.parseInt(new String(input, 1, input.length - 1));
 		} catch (NumberFormatException e) {

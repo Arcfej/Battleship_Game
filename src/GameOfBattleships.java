@@ -63,7 +63,7 @@ public class GameOfBattleships {
 			System.out.println("TODO: what if save unsuccessful?");
 			System.out.println("TODO: AI choose its target differently");
 			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
-			Position target = null;
+			Position target;
 			// Loop: get a valid input from the user
 			while (true) {
 				try {
@@ -73,7 +73,7 @@ public class GameOfBattleships {
 					if (e.getMessage().equals("Exit")) return;
 					// Continue asking a valid input from the user
 					else {
-					    System.out.println("\nNot a valid target. (For exit, type in 'Exit'");
+					    System.out.println("\nNot a valid target. (For exit, type in 'Exit')");
                         continue;
                     }
 				}
@@ -122,7 +122,6 @@ public class GameOfBattleships {
 	 * 								  The exception contains the input in its message.
 	 */
 	private Position askCoordinate() throws InputMismatchException {
-		System.out.println(Menu.SEPARATOR);
 		System.out.println("What is your target?");
 		System.out.println(Menu.SEPARATOR);
 		String input = in.nextLine();
