@@ -10,16 +10,6 @@ import java.util.Scanner;
 public class GameOfBattleships {
 
     /**
-     * The number of rows of the battleship gamefield.
-     */
-    public static final int NUMBER_OF_ROWS = 10;
-
-    /**
-     * The number of Columns of the battleship gamefield.
-     */
-    public static final int NUMBER_OF_COLUMNS = 10;
-
-    /**
 	 * The menu of the game which handles e.g. the saving of the game state.
 	 */
 	private final Menu menu;
@@ -33,6 +23,16 @@ public class GameOfBattleships {
 	 * The number of rounds the players played.
 	 */
 	private int rounds;
+
+    /**
+     * The first player;
+     */
+	private Player player1;
+
+    /**
+     * The second player
+     */
+	private Player player2;
 	
 	/**
 	 * The player who is firing on the other
@@ -54,8 +54,10 @@ public class GameOfBattleships {
 		this.menu = menu;
 		this.in = in;
 		rounds = 1;
-		activePlayer = new Player();
-		passivePlayer = new Player();
+		player1 = new Player();
+		player2 = new Player();
+		activePlayer = player1;
+		passivePlayer = player2;
 	}
 	
 	/**
@@ -73,6 +75,7 @@ public class GameOfBattleships {
 			System.out.println("TODO: what if save unsuccessful?");
 			System.out.println("TODO: AI choose its target differently");
 			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+			displayGrids();
 			Position target;
 			// Loop: get a valid input from the user
 			while (true) {
@@ -132,7 +135,7 @@ public class GameOfBattleships {
 	 * 								  The exception contains the input in its message.
 	 */
 	private Position askCoordinate() throws InputMismatchException {
-		System.out.println("What is your target? (e.g. 'A1'");
+		System.out.println("What is your target? (e.g. 'A1')");
 		System.out.println(Menu.SEPARATOR);
 		String input = in.nextLine();
 		try {
@@ -146,7 +149,50 @@ public class GameOfBattleships {
 	 * Display the battlefields to the user(s).
 	 */
 	private void displayGrids() {
-		System.out.println("TODO: display the battlefield");
+	    int widthOfLabel = 5;
+	    int spaceTillLabel = (int) Math.ceil((Menu.TABLE_WIDTH - widthOfLabel) / 2f);
+	    int firstPosition = spaceTillLabel + widthOfLabel;
+	    int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillLabel + widthOfLabel);
+	    System.out.println(String.format("%" + firstPosition + "s%"+ secondPosition + "s", "Enemy", "Yours"));
+        for (int row = 0; row < Menu.NUMBER_OF_ROWS; row++) {
+//			StringBuilder formatter = new StringBuilder();
+//			for (int i = 1; i <= Menu.TABLE_WIDTH; i++) {
+//				formatter.append("$").append(i).append("%s|");
+//			}
+//			formatter.deleteCharAt(formatter.length() - 1);
+//			formatter.append(" ".repeat(Menu.GAP));
+//			for (int i = 1; i <= Menu.TABLE_WIDTH; i++) {
+//				formatter.append("$").append(i).append("%s|");
+//			}
+//			formatter.deleteCharAt(formatter.length() - 1);
+//			Character[] xs = new Character[Menu.NUMBER_OF_COLUMNS];
+//			for (Character c : xs) {
+//				c = 'X';
+//			}
+//			System.out.println(String.format(formatter.toString(), xs));
+
+			System.out.print(" " + Menu.COLUMN_SEPARATOR);
+			for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
+				System.out.print((char) (i + 65));
+				if (i < Menu.NUMBER_OF_COLUMNS - 1) System.out.print("|");
+			}
+
+			System.out.print(" ".repeat(Menu.GAP));
+
+			System.out.print(" " + Menu.COLUMN_SEPARATOR);
+			for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
+				System.out.print((char) (i + 65));
+				if (i < Menu.NUMBER_OF_COLUMNS - 1) System.out.print("|");
+			}
+			System.out.println();
+
+			Character[] xs = new Character[Menu.NUMBER_OF_COLUMNS];
+			for (Character c : xs) {
+				c = 'X';
+			}
+
+			System.out.println(Menu.SEPARATOR);
+        }
 	}
 	
 	/**

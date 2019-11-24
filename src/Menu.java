@@ -9,8 +9,23 @@ import java.util.Scanner;
  * @author MIklosMayer
  */
 public class Menu {
+
+	/**
+	 * The number of rows of the battleship gamefield.
+	 */
+	public static final int NUMBER_OF_ROWS = 10;
+
+	/**
+	 * The number of Columns of the battleship gamefield.
+	 */
+	public static final int NUMBER_OF_COLUMNS = 10;
+
+	public static final int GAP = 2;
+	public static final int TABLE_WIDTH = (NUMBER_OF_COLUMNS + 1) * 2 - 1;
 	
-	public static final String SEPARATOR = "—————————————————————————————————————————————————————————————";
+	public static final String SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", " ").replace(" ", "—");
+
+	public static final char COLUMN_SEPARATOR = '|';
 
 	/**
 	 * The file path to the saved game(s).
