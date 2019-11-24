@@ -7,9 +7,11 @@ import java.util.Scanner;
  *
  */
 public class Player {
+	
+	private String name;
 
 	public Player() {
-
+		name = "Active player";
 	}
 	
 	public void placeShips() {
@@ -26,5 +28,9 @@ public class Player {
 			in.next();
 		}
 		return -1;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

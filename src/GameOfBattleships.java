@@ -75,7 +75,9 @@ public class GameOfBattleships {
 			System.out.println("TODO: what if save unsuccessful?");
 			System.out.println("TODO: AI choose its target differently");
 			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+			
 			displayGrids();
+			
 			Position target;
 			// Loop: get a valid input from the user
 			while (true) {
@@ -136,7 +138,7 @@ public class GameOfBattleships {
 	 */
 	private Position askCoordinate() throws InputMismatchException {
 		System.out.println("What is your target? (e.g. 'A1')");
-		System.out.println(Menu.SEPARATOR);
+		System.out.println(Menu.LINE_SEPARATOR);
 		String input = in.nextLine();
 		try {
 			return new Position(input);
@@ -149,50 +151,48 @@ public class GameOfBattleships {
 	 * Display the battlefields to the user(s).
 	 */
 	private void displayGrids() {
-	    int widthOfLabel = 5;
-	    int spaceTillLabel = (int) Math.ceil((Menu.TABLE_WIDTH - widthOfLabel) / 2f);
-	    int firstPosition = spaceTillLabel + widthOfLabel;
-	    int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillLabel + widthOfLabel);
-	    System.out.println(String.format("%" + firstPosition + "s%"+ secondPosition + "s", "Enemy", "Yours"));
+		// Numbers which help position the table-labels above the tables to the middle.
+	    int spaceTillFirstLabel = (int) Math.ceil((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
+	    int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();
+	    int spaceTillSecondLabel = (int) Math.ceil((Menu.TABLE_WIDTH - activePlayer.getName().length()) / 2f);
+	    int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillSecondLabel + activePlayer.getName().length());
+	    // Display the labels above the tables
+	    System.out.println();
+	    System.out.printf("%" + firstPosition + "s%"+ secondPosition + "s\n", passivePlayer.getName().toUpperCase(), activePlayer.getName().toUpperCase());
+	    System.out.println();
+	    
+	    // First line with the column indexes
+	    String[] columnIndexes = new String[Menu.NUMBER_OF_COLUMNS];
+	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
+	    	columnIndexes[i] = (char) (i + 65) + " ";
+	    }
+	    System.out.println(generateTableLine("", columnIndexes) + " ".repeat(Menu.GAP) + generateTableLine("", columnIndexes));
+		System.out.println(generateTableLineSeparator() + " ".repeat(Menu.GAP) + generateTableLineSeparator());
+	    
+	    // Battlefields line by line
         for (int row = 0; row < Menu.NUMBER_OF_ROWS; row++) {
-//			StringBuilder formatter = new StringBuilder();
-//			for (int i = 1; i <= Menu.TABLE_WIDTH; i++) {
-//				formatter.append("$").append(i).append("%s|");
-//			}
-//			formatter.deleteCharAt(formatter.length() - 1);
-//			formatter.append(" ".repeat(Menu.GAP));
-//			for (int i = 1; i <= Menu.TABLE_WIDTH; i++) {
-//				formatter.append("$").append(i).append("%s|");
-//			}
-//			formatter.deleteCharAt(formatter.length() - 1);
-//			Character[] xs = new Character[Menu.NUMBER_OF_COLUMNS];
-//			for (Character c : xs) {
-//				c = 'X';
-//			}
-//			System.out.println(String.format(formatter.toString(), xs));
-
-			System.out.print(" " + Menu.COLUMN_SEPARATOR);
-			for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
-				System.out.print((char) (i + 65));
-				if (i < Menu.NUMBER_OF_COLUMNS - 1) System.out.print("|");
-			}
-
-			System.out.print(" ".repeat(Menu.GAP));
-
-			System.out.print(" " + Menu.COLUMN_SEPARATOR);
-			for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
-				System.out.print((char) (i + 65));
-				if (i < Menu.NUMBER_OF_COLUMNS - 1) System.out.print("|");
-			}
-			System.out.println();
-
-			Character[] xs = new Character[Menu.NUMBER_OF_COLUMNS];
-			for (Character c : xs) {
-				c = 'X';
-			}
-
-			System.out.println(Menu.SEPARATOR);
+        	System.out.println(generateTableLine(String.valueOf(row + 1), columnIndexes) + " ".repeat(Menu.GAP) + generateTableLine(String.valueOf(row + 1), columnIndexes));
+			System.out.println(generateTableLineSeparator() + " ".repeat(Menu.GAP) + generateTableLineSeparator());
         }
+        System.out.println();
+	}
+	
+	private String generateTableLineSeparator() {
+		String lineSeparator = "—————";
+		String[] cells = new String[Menu.NUMBER_OF_COLUMNS];
+	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
+	    	cells[i] = lineSeparator;
+	    }
+	    return generateTableLine(lineSeparator, cells);
+	}
+	
+	private <T> String generateTableLine(String rowIndex, T[] rowData) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(String.format("%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR, rowIndex + " "));
+	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
+	    	builder.append(String.format("%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR, rowData[i]));
+	    }
+	    return builder.toString();
 	}
 	
 	/**

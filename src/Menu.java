@@ -11,21 +11,59 @@ import java.util.Scanner;
 public class Menu {
 
 	/**
-	 * The number of rows of the battleship gamefield.
+	 * The number of rows of a battleship table.
 	 */
 	public static final int NUMBER_OF_ROWS = 10;
 
 	/**
-	 * The number of Columns of the battleship gamefield.
+	 * The number of Columns of a battleship table.
 	 */
 	public static final int NUMBER_OF_COLUMNS = 10;
 
-	public static final int GAP = 2;
-	public static final int TABLE_WIDTH = (NUMBER_OF_COLUMNS + 1) * 2 - 1;
+	/**
+	 * The width of one column of the battlefield without the borders.
+	 */
+	public static final int COLUMN_WIDTH = 3;
 	
-	public static final String SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", " ").replace(" ", "—");
+	/**
+	 * The gap between the two displayed battlefield.
+	 */
+	public static final int GAP = 10;
+	
+	/**
+	 * The width of one table (battlefield).
+	 */
+	public static final int TABLE_WIDTH = (NUMBER_OF_COLUMNS + 1) * (COLUMN_WIDTH + 1);
+	
+	/**
+	 * Used between lines to separate contents in the console.
+	 */
+	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "—");
 
+	/**
+	 * The character which separates the columns of a battlefield.
+	 */
 	public static final char COLUMN_SEPARATOR = '|';
+	
+	/**
+	 * The character which is used to display the missed shots.
+	 */
+	public static final char MISSED_SHOT = '•';
+	
+	/**
+	 * The character which is used to display the hits on a ship.
+	 */
+	public static final char HIT = 'Ø';
+	
+	/**
+	 * The character which is used to display the unhit ships if they are visible.
+	 */
+	public static final char SHIP = 'O';
+	
+	/**
+	 * The character which is used to display the sank ships.
+	 */
+	public static final char SANK_SHIP = '#';
 
 	/**
 	 * The file path to the saved game(s).
@@ -72,7 +110,7 @@ public class Menu {
 		// Display the menu options
 		System.out.println();
 		System.out.println("Choose one of the options:");
-		System.out.println(SEPARATOR);
+		System.out.println(LINE_SEPARATOR);
 		System.out.println("1) New Game");
 		// Display the Load Game option only if there is a saved game.
 		if (hasSavedGame) {
@@ -80,7 +118,7 @@ public class Menu {
 		}
 		System.out.println("3) Leaderboard");
 		System.out.println("0) Exit");
-		System.out.println(SEPARATOR);
+		System.out.println(LINE_SEPARATOR);
 		
 		// Validate the input from the user.
 		if (in.hasNextInt()) {
@@ -122,7 +160,7 @@ public class Menu {
 	 */
 	private void invalidMenuChoice() {
 		System.out.println();
-		System.out.println(SEPARATOR);
+		System.out.println(LINE_SEPARATOR);
 		System.out.println("Valid inputs are numbers listed bellow.");
 	}
 	
