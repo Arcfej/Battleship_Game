@@ -151,46 +151,75 @@ public class GameOfBattleships {
 	 * Display the battlefields to the user(s).
 	 */
 	private void displayGrids() {
-		// Numbers which help position the table-labels above the tables to the middle.
+		// Numbers which help positioning the labels above the tables to the middle.
 	    int spaceTillFirstLabel = (int) Math.ceil((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
 	    int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();
 	    int spaceTillSecondLabel = (int) Math.ceil((Menu.TABLE_WIDTH - activePlayer.getName().length()) / 2f);
 	    int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillSecondLabel + activePlayer.getName().length());
 	    // Display the labels above the tables
 	    System.out.println();
-	    System.out.printf("%" + firstPosition + "s%"+ secondPosition + "s\n", passivePlayer.getName().toUpperCase(), activePlayer.getName().toUpperCase());
+	    System.out.printf(
+	    		"%" + firstPosition + "s%"+ secondPosition + "s\n",
+				passivePlayer.getName().toUpperCase(),
+				activePlayer.getName().toUpperCase()
+		);
 	    System.out.println();
 	    
 	    // First line with the column indexes
-	    String[] columnIndexes = new String[Menu.NUMBER_OF_COLUMNS];
+	    Character[] columnIndexes = new Character[Menu.NUMBER_OF_COLUMNS];
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
-	    	columnIndexes[i] = (char) (i + 65) + " ";
+	    	// Calculate the ascii codes of the indexes
+	    	columnIndexes[i] = (char) (i + 65);
 	    }
-	    System.out.println(generateTableLine("", columnIndexes) + " ".repeat(Menu.GAP) + generateTableLine("", columnIndexes));
-		System.out.println(generateTableLineSeparator() + " ".repeat(Menu.GAP) + generateTableLineSeparator());
+	    System.out.println(
+	    		generateTableRow("", columnIndexes)
+				+ " ".repeat(Menu.GAP)
+				+ generateTableRow("", columnIndexes)
+		);
+	    // Display a border between two table rows
+		System.out.println(generateTableRowSeparator() + " ".repeat(Menu.GAP) + generateTableRowSeparator());
 	    
 	    // Battlefields line by line
         for (int row = 0; row < Menu.NUMBER_OF_ROWS; row++) {
-        	System.out.println(generateTableLine(String.valueOf(row + 1), columnIndexes) + " ".repeat(Menu.GAP) + generateTableLine(String.valueOf(row + 1), columnIndexes));
-			System.out.println(generateTableLineSeparator() + " ".repeat(Menu.GAP) + generateTableLineSeparator());
+        	System.out.println(
+        			generateTableRow(String.valueOf(row + 1), columnIndexes)
+					+ " ".repeat(Menu.GAP)
+					+ generateTableRow(String.valueOf(row + 1), columnIndexes)
+			);
+        	// Display a border between two table rows
+			System.out.println(generateTableRowSeparator() + " ".repeat(Menu.GAP) + generateTableRowSeparator());
         }
         System.out.println();
 	}
-	
-	private String generateTableLineSeparator() {
+
+	/**
+	 * Generate a separator line between two rows of a battleship table
+	 *
+	 * @return the generated line as a String
+	 */
+	private String generateTableRowSeparator() {
 		String lineSeparator = "—————";
 		String[] cells = new String[Menu.NUMBER_OF_COLUMNS];
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
 	    	cells[i] = lineSeparator;
 	    }
-	    return generateTableLine(lineSeparator, cells);
+	    return generateTableRow(lineSeparator, cells);
 	}
-	
-	private <T> String generateTableLine(String rowIndex, T[] rowData) {
+
+	/**
+	 * Generate a row for a table of battleship.
+	 *
+	 * @param rowIndex The index of the row to display at the start of the row.
+	 * @param rowData The array of data to display in the cells.
+	 * @param <T> The type of the data to display.
+	 * @return
+	 */
+	private <T> String generateTableRow(String rowIndex, T[] rowData) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(String.format("%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR, rowIndex + " "));
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
-	    	builder.append(String.format("%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR, rowData[i]));
+	    	// TODO index out of bound?
+	    	builder.append(String.format("%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR, rowData[i].toString() + " "));
 	    }
 	    return builder.toString();
 	}
