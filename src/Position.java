@@ -61,7 +61,7 @@ public class Position {
 	private boolean validateColumn(char[] input) {
 		if (!validateInputLength(input)) return false;
 		int column = calculateColumn(input);
-		return column > 0 && column <= GameOfBattleships.NUMBER_OF_COLUMNS;
+		return column > 0 && column <= Menu.NUMBER_OF_COLUMNS;
 	}
 
     /**
@@ -78,7 +78,7 @@ public class Position {
 		} catch (NumberFormatException e) {
 			return false;
 		}
-		return row > 0 && row <= GameOfBattleships.NUMBER_OF_ROWS;
+		return row > 0 && row <= Menu.NUMBER_OF_ROWS;
 	}
 
     /**
