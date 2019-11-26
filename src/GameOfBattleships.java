@@ -54,8 +54,8 @@ public class GameOfBattleships {
 		this.menu = menu;
 		this.in = in;
 		rounds = 1;
-		player1 = new Player();
-		player2 = new Player();
+		player1 = new Player("TODO: Add name");
+		player2 = new Player("TODO: Add name");
 		activePlayer = player1;
 		passivePlayer = player2;
 	}
@@ -212,7 +212,7 @@ public class GameOfBattleships {
 	 * @param rowIndex The index of the row to display at the start of the row.
 	 * @param rowData The array of data to display in the cells.
 	 * @param <T> The type of the data to display.
-	 * @return
+	 * @return the generated row as a String
 	 */
 	private <T> String generateTableRow(String rowIndex, T[] rowData) {
 		StringBuilder builder = new StringBuilder();

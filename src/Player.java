@@ -7,11 +7,19 @@ import java.util.Scanner;
  *
  */
 public class Player {
-	
-	private String name;
 
-	public Player() {
-		name = "Active player";
+    private final String name;
+	private int hits;
+	private int misses;
+	private Ship[] fleet;
+	private Field[][] battlefield;
+
+	public Player(String name) {
+	    this.name = name;
+		hits = 0;
+		misses = 0;
+		fleet = new Ship[10];
+        battlefield = new Field[Menu.NUMBER_OF_COLUMNS][Menu.NUMBER_OF_ROWS];
 	}
 	
 	public void placeShips() {
@@ -29,8 +37,20 @@ public class Player {
 		}
 		return -1;
 	}
-	
-	public String getName() {
-		return name;
-	}
+
+    public String getName() {
+        return name;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public int getMisses() {
+        return misses;
+    }
+
+    public Field[][] getBattlefield() {
+        return battlefield;
+    }
 }
