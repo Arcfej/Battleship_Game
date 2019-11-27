@@ -14,7 +14,7 @@ public class Player {
 	private Ship[] fleet;
 
 	/**
-	 * Columns first, rows second
+	 * Rows first, columns second
 	 */
 	private Field[][] battlefield;
 
@@ -28,14 +28,15 @@ public class Player {
 			Field[] column = battlefield[i];
 			for (int j = 0, columnLength = column.length; j < columnLength; j++) {
 				column[j] = new Field(new Position(
-						String.valueOf(Position.calculateColumnIndexFromInteger(i + 1))
-								+ (j + 1)));
+						String.valueOf(Position.calculateColumnIndexFromInteger(j + 1))
+								+ (i + 1)));
 			}
 		}
 	}
 	
 	public void placeShips(GameOfBattleships game, Scanner in) {
 		int count = 0;
+		String error = "";
 		for (int shipLength = 4; shipLength >= 1; shipLength--) {
 			for (int pieces = 5 - shipLength; pieces >= 1; pieces--) {
 				Position position;
@@ -43,20 +44,67 @@ public class Player {
 				boolean valid = false;
 				while (!valid) {
 					game.displayGrids();
+					if (!error.isEmpty()) {
+						System.out.println(error);
+						System.out.println(Menu.LINE_SEPARATOR);
+					}
 					System.out.printf("Place your %s (%d long).\n", getShipName(shipLength), shipLength);
 					System.out.println("Where would you like it's top-left end?");
 					try {
 						position = new Position(in.nextLine());
-						direction = getDirection(in);
-						System.out.println("TODO: Validate ship placement");
-						System.out.println("TODO: Update fields with ship id");
-						fleet[count] = new Ship(4, position, direction);
-						valid = true;
-						count++;
+						if (shipLength > 1) direction = getDirection(in);
+						else direction = 0;
+						if (isPlacementAllowed(position, direction, shipLength)) {
+							Ship newShip = new Ship(shipLength, position, direction);
+							fleet[count] = newShip;
+							updateFieldsWithNewShip(newShip);
+							valid = true;
+							count++;
+							error = "";
+						} else {
+							error = "You cannot place this ship there. It collides with other ships or stick out from the battlefield.";
+						}
 					} catch (IllegalArgumentException e) {
-						System.out.println("Please enter a correct position (like 'B5').");
+						error = "Please enter a correct position (like 'B5').";
 					}
 				}
+			}
+		}
+	}
+
+	private boolean isPlacementAllowed(Position position, int direction, int length) {
+		int x = position.getColumn() - 1;
+		int y = position.getRow() - 1;
+		if (direction == 0) {
+			if (x + length > Menu.NUMBER_OF_COLUMNS) return false;
+			for (int row = (y == 0 ? y : y - 1); row <= (y == Menu.NUMBER_OF_ROWS - 1 ? y : y + 1); row++) {
+				for (int column = (x == 0 ? x : x - 1); column < (x + length == Menu.NUMBER_OF_COLUMNS ? x + length : x + length + 1); column++) {
+					if (battlefield[row][column].hasShip()) return false;
+				}
+			}
+		} else if (direction == 1) {
+			if (y + length > Menu.NUMBER_OF_ROWS) return false;
+			for (int row = (y == 0 ? y : y - 1); row < (y + length == Menu.NUMBER_OF_ROWS ? y + length : y + length + 1); row++) {
+				for (int column = (x == 0 ? x : x - 1); column <= (x == Menu.NUMBER_OF_COLUMNS - 1 ? x : x + 1); column++) {
+					if (battlefield[row][column].hasShip()) return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+
+	private void updateFieldsWithNewShip(Ship ship) {
+		int x = ship.getPosition().getColumn() - 1;
+		int y = ship.getPosition().getRow() - 1;
+		if (ship.getDirection() == 0) {
+			for (int column = x; column < x + ship.getSize(); column++) {
+				battlefield[y][column].placeShip(ship.getId());
+			}
+		} else if (ship.getDirection() == 1) {
+			for (int row = y; row < y + ship.getSize(); row++) {
+				battlefield[row][x].placeShip(ship.getId());
 			}
 		}
 	}
@@ -117,27 +165,24 @@ public class Player {
         return misses;
     }
 
-    public Character[][] getBattlefieldData() {
-		Character[][] data = new Character[Menu.NUMBER_OF_COLUMNS][Menu.NUMBER_OF_ROWS];
+    public Character[] getBattlefieldData(int rowIndex) {
+		Character[] data = new Character[Menu.NUMBER_OF_COLUMNS];
 
-		for (int i = 0, battlefieldLength = battlefield.length; i < battlefieldLength; i++) {
-			Field[] column = battlefield[i];
+		Field[] row = battlefield[rowIndex];
+		for (int i = 0, columnLength = row.length; i < columnLength; i++) {
+			Field field = row[i];
 
-			for (int j = 0, columnLength = column.length; j < columnLength; j++) {
-				Field field = column[j];
-				char c;
-
-				if (field.hasShip()) {
-					if (field.isSank()) c = Menu.SANK_SHIP;
-					else if (field.isFired()) c = Menu.HIT;
-					else c = Menu.SHIP;
-				} else {
-					if (field.isFired()) c = Menu.MISSED_SHOT;
-					else c = ' ';
-				}
-
-				data[i][j] = c;
+			char c;
+			if (field.hasShip()) {
+				if (field.isSank()) c = Menu.SANK_SHIP;
+				else if (field.isFired()) c = Menu.HIT;
+				else c = Menu.SHIP;
+			} else {
+				if (field.isFired()) c = Menu.MISSED_SHOT;
+				else c = ' ';
 			}
+
+			data[i] = c;
 		}
 		return data;
     }

@@ -183,9 +183,9 @@ public class GameOfBattleships {
 	    // Battlefields line by line
         for (int row = 0; row < Menu.NUMBER_OF_ROWS; row++) {
         	System.out.println(
-        			generateTableRow(String.valueOf(row + 1), passivePlayer.getBattlefieldData()[row])
+        			generateTableRow(String.valueOf(row + 1), passivePlayer.getBattlefieldData(row))
 					+ " ".repeat(Menu.GAP)
-					+ generateTableRow(String.valueOf(row + 1), activePlayer.getBattlefieldData()[row])
+					+ generateTableRow(String.valueOf(row + 1), activePlayer.getBattlefieldData(row))
 			);
         	// Display a border between two table rows
 			System.out.println(generateTableRowSeparator() + " ".repeat(Menu.GAP) + generateTableRowSeparator());
@@ -199,7 +199,7 @@ public class GameOfBattleships {
 	 * @return the generated line as a String
 	 */
 	private String generateTableRowSeparator() {
-		String lineSeparator = "—————";
+		String lineSeparator = "——————";
 		String[] cells = new String[Menu.NUMBER_OF_COLUMNS];
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
 	    	cells[i] = lineSeparator;
@@ -217,12 +217,19 @@ public class GameOfBattleships {
 	 */
 	private <T> String generateTableRow(String rowIndex, T[] rowData) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(String.format("%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR, rowIndex + " "));
+
+		builder.append(generateTableCell(rowIndex));
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
-	    	// TODO index out of bound?
-	    	builder.append(String.format("%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR, rowData[i].toString() + " "));
+	    	builder.append(generateTableCell(rowData[i]));
 	    }
 	    return builder.toString();
+	}
+
+	private <T> String generateTableCell(T content) {
+		return String.format(
+				"%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR,
+				content + " ".repeat((int) Math.ceil(Menu.COLUMN_WIDTH / 2f) - 1)
+		);
 	}
 	
 	/**

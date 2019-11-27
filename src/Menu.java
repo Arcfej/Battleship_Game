@@ -23,7 +23,7 @@ public class Menu {
 	/**
 	 * The width of one column of the battlefield without the borders.
 	 */
-	public static final int COLUMN_WIDTH = 3;
+	public static final int COLUMN_WIDTH = 5;
 	
 	/**
 	 * The gap between the two displayed battlefield.
