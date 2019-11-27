@@ -32,6 +32,16 @@ public class Position {
 		}
 	}
 
+	/**
+	 * 'A' = 1, not 0
+	 *
+	 * @param i
+	 * @return
+	 */
+	public static char calculateColumnIndexFromInteger(int i) {
+		return (char) (i + 'A' - 1);
+	}
+
     /**
      * Validate if the input is in the correct format.
      *

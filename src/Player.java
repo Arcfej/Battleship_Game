@@ -12,6 +12,10 @@ public class Player {
 	private int hits;
 	private int misses;
 	private Ship[] fleet;
+
+	/**
+	 * Columns first, rows second
+	 */
 	private Field[][] battlefield;
 
 	public Player(String name) {
@@ -20,6 +24,14 @@ public class Player {
 		misses = 0;
 		fleet = new Ship[10];
         battlefield = new Field[Menu.NUMBER_OF_COLUMNS][Menu.NUMBER_OF_ROWS];
+		for (int i = 0, battlefieldLength = battlefield.length; i < battlefieldLength; i++) {
+			Field[] column = battlefield[i];
+			for (int j = 0, columnLength = column.length; j < columnLength; j++) {
+				column[j] = new Field(new Position(
+						String.valueOf(Position.calculateColumnIndexFromInteger(i + 1))
+								+ (j + 1)));
+			}
+		}
 	}
 	
 	public void placeShips(GameOfBattleships game, Scanner in) {
@@ -105,7 +117,28 @@ public class Player {
         return misses;
     }
 
-    public Field[][] getBattlefield() {
-        return battlefield;
+    public Character[][] getBattlefieldData() {
+		Character[][] data = new Character[Menu.NUMBER_OF_COLUMNS][Menu.NUMBER_OF_ROWS];
+
+		for (int i = 0, battlefieldLength = battlefield.length; i < battlefieldLength; i++) {
+			Field[] column = battlefield[i];
+
+			for (int j = 0, columnLength = column.length; j < columnLength; j++) {
+				Field field = column[j];
+				char c;
+
+				if (field.hasShip()) {
+					if (field.isSank()) c = Menu.SANK_SHIP;
+					else if (field.isFired()) c = Menu.HIT;
+					else c = Menu.SHIP;
+				} else {
+					if (field.isFired()) c = Menu.MISSED_SHOT;
+					else c = ' ';
+				}
+
+				data[i][j] = c;
+			}
+		}
+		return data;
     }
 }

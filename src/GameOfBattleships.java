@@ -183,9 +183,9 @@ public class GameOfBattleships {
 	    // Battlefields line by line
         for (int row = 0; row < Menu.NUMBER_OF_ROWS; row++) {
         	System.out.println(
-        			generateTableRow(String.valueOf(row + 1), columnIndexes)
+        			generateTableRow(String.valueOf(row + 1), passivePlayer.getBattlefieldData()[row])
 					+ " ".repeat(Menu.GAP)
-					+ generateTableRow(String.valueOf(row + 1), columnIndexes)
+					+ generateTableRow(String.valueOf(row + 1), activePlayer.getBattlefieldData()[row])
 			);
         	// Display a border between two table rows
 			System.out.println(generateTableRowSeparator() + " ".repeat(Menu.GAP) + generateTableRowSeparator());
