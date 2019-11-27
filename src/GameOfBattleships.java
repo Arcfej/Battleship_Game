@@ -65,8 +65,9 @@ public class GameOfBattleships {
 	 */
 	public void play() {
 		// Placing the ships.
-		activePlayer.placeShips(in);
-		passivePlayer.placeShips(in);
+		activePlayer.placeShips(this, in);
+		System.out.println("TODO: Uncomment ship placement after testing");
+//		passivePlayer.placeShips(this, in);
 		
 		// Loop: Firing on each other.
 		boolean end = false;
@@ -148,9 +149,9 @@ public class GameOfBattleships {
 	}
 
 	/**
-	 * Display the battlefields to the user(s).
+	 * Displays the battlefields to the user(s).
 	 */
-	private void displayGrids() {
+	public void displayGrids() {
 		// Numbers which help positioning the labels above the tables to the middle.
 	    int spaceTillFirstLabel = (int) Math.ceil((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
 	    int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();

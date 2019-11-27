@@ -22,15 +22,16 @@ public class Player {
         battlefield = new Field[Menu.NUMBER_OF_COLUMNS][Menu.NUMBER_OF_ROWS];
 	}
 	
-	public void placeShips(Scanner in) {
+	public void placeShips(GameOfBattleships game, Scanner in) {
 		int count = 0;
-		for (int shipType = 4; shipType >= 1; shipType--) {
-			for (int pieces = 5 - shipType; pieces >= 1; pieces--) {
+		for (int shipLength = 4; shipLength >= 1; shipLength--) {
+			for (int pieces = 5 - shipLength; pieces >= 1; pieces--) {
 				Position position;
 				int direction;
 				boolean valid = false;
 				while (!valid) {
-					System.out.printf("Place your Battleship (%d long).\n", shipType);
+					game.displayGrids();
+					System.out.printf("Place your %s (%d long).\n", getShipName(shipLength), shipLength);
 					System.out.println("Where would you like it's top-left end?");
 					try {
 						position = new Position(in.nextLine());
@@ -45,6 +46,21 @@ public class Player {
 					}
 				}
 			}
+		}
+	}
+
+	private String getShipName(int shipLength) {
+		switch (shipLength) {
+			case 4:
+				return "Battleship";
+			case 3:
+				return "Cruiser";
+			case 2:
+				return "Destroyer";
+			case 1:
+				return "Submarine";
+			default:
+				return "";
 		}
 	}
 
