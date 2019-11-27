@@ -54,8 +54,8 @@ public class GameOfBattleships {
 		this.menu = menu;
 		this.in = in;
 		rounds = 1;
-		player1 = new Player("TODO: Add name");
-		player2 = new Player("TODO: Add name");
+		player1 = new Player("Player 1");
+		player2 = new Player("Player 2");
 		activePlayer = player1;
 		passivePlayer = player2;
 	}
@@ -66,19 +66,17 @@ public class GameOfBattleships {
 	public void play() {
 		// Placing the ships.
 		activePlayer.placeShips(this, in);
-		System.out.println("TODO: Uncomment ship placement after testing");
-//		passivePlayer.placeShips(this, in);
+		passivePlayer.placeShips(this, in);
 		
 		// Loop: Firing on each other.
 		boolean end = false;
 		while (!end) {
 			menu.saveGame();
 			System.out.println("TODO: what if save unsuccessful?");
-			System.out.println("TODO: AI choose its target differently");
 			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
-			
+
 			displayGrids();
-			
+
 			Position target;
 			// Loop: get a valid input from the user
 			while (true) {
@@ -225,6 +223,13 @@ public class GameOfBattleships {
 	    return builder.toString();
 	}
 
+	/**
+	 * Generate a cell for a table of battleship.
+	 *
+	 * @param content to display in the cell.
+	 * @param <T> The type of the data to display.
+	 * @return the generated cell as a String.
+	 */
 	private <T> String generateTableCell(T content) {
 		return String.format(
 				"%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR,

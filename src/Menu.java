@@ -4,7 +4,8 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
- * The main menu and entry point of the game. It handles all the interactions between the user(s) and the computer.
+ * The main menu and entry point of the Battleship game.
+ * It handles all the interactions between the user(s) and the computer.
  * 
  * @author MIklosMayer
  */
@@ -21,7 +22,7 @@ public class Menu {
 	public static final int NUMBER_OF_COLUMNS = 10;
 
 	/**
-	 * The width of one column of the battlefield without the borders.
+	 * The width of one column of the battlefield without the borders. (characters)
 	 */
 	public static final int COLUMN_WIDTH = 5;
 	
@@ -80,6 +81,9 @@ public class Menu {
 	 */
 	private boolean hasSavedGame;
 
+	/**
+	 * The default constructor of the class
+	 */
 	private Menu() {
 		hasSavedGame = Files.exists(SAVE_PATH);
 		game = null;
