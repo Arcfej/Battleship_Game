@@ -65,8 +65,8 @@ public class GameOfBattleships {
 	 */
 	public void play() {
 		// Placing the ships.
-		activePlayer.placeShips();
-		passivePlayer.placeShips();
+		activePlayer.placeShips(in);
+		passivePlayer.placeShips(in);
 		
 		// Loop: Firing on each other.
 		boolean end = false;

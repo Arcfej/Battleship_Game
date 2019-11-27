@@ -22,8 +22,47 @@ public class Player {
         battlefield = new Field[Menu.NUMBER_OF_COLUMNS][Menu.NUMBER_OF_ROWS];
 	}
 	
-	public void placeShips() {
-		System.out.println("TODO: place ships");
+	public void placeShips(Scanner in) {
+		int count = 0;
+		for (int shipType = 4; shipType >= 1; shipType--) {
+			for (int pieces = 5 - shipType; pieces >= 1; pieces--) {
+				Position position;
+				int direction;
+				boolean valid = false;
+				while (!valid) {
+					System.out.printf("Place your Battleship (%d long).\n", shipType);
+					System.out.println("Where would you like it's top-left end?");
+					try {
+						position = new Position(in.nextLine());
+						direction = getDirection(in);
+						System.out.println("TODO: Validate ship placement");
+						System.out.println("TODO: Update fields with ship id");
+						fleet[count] = new Ship(4, position, direction);
+						valid = true;
+						count++;
+					} catch (IllegalArgumentException e) {
+						System.out.println("Please enter a correct position (like 'B5').");
+					}
+				}
+			}
+		}
+	}
+
+	private int getDirection(Scanner in) {
+		char direction;
+		while (true) {
+			System.out.println("Would you like it to be horizontal ('h') or vertical ('v')?");
+			String input = in.nextLine();
+			if (input.length() == 1) {
+				direction = input.charAt(0);
+				if (direction == 'h') {
+					return 0;
+				} else if (direction == 'v') {
+					return 1;
+				}
+			}
+			System.out.println("Not a valid input.");
+		}
 	}
 
 	public int takeFire(Position target) {

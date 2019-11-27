@@ -14,6 +14,11 @@ public class Field {
         shipId = -1;
     }
 
+    public void placeShip(int shipId) {
+        hasShip = true;
+        this.shipId = shipId;
+    }
+
     public Position getPosition() {
         return position;
     }
