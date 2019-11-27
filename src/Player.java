@@ -44,11 +44,12 @@ public class Player {
 		hits = 0;
 		misses = 0;
 		fleet = new Ship[10];
-        battlefield = new Field[Menu.NUMBER_OF_COLUMNS][Menu.NUMBER_OF_ROWS];
+		// Fill up the battlefield with empty fields without ships.
+        battlefield = new Field[Menu.NUMBER_OF_ROWS][Menu.NUMBER_OF_COLUMNS];
 		for (int i = 0, battlefieldLength = battlefield.length; i < battlefieldLength; i++) {
-			Field[] column = battlefield[i];
-			for (int j = 0, columnLength = column.length; j < columnLength; j++) {
-				column[j] = new Field(new Position(
+			Field[] row = battlefield[i];
+			for (int j = 0, columnLength = row.length; j < columnLength; j++) {
+				row[j] = new Field(new Position(
 						String.valueOf(Position.calculateColumnIndexFromInteger(j + 1))
 								+ (i + 1)));
 			}
