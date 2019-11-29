@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -228,14 +229,37 @@ public class Player {
 		}
 	}
 
+	/**
+	 * Ask for coordinates from the active player to fire upon.
+	 *
+	 * @return the position of the target.
+	 * @throws InputMismatchException when the input provided by the user is not a coordinate.
+	 * 								  The exception contains the input in its message.
+	 */
+	public Position askCoordinate(Scanner in) throws InputMismatchException {
+		while (true) {
+			System.out.println("What is your target? (e.g. 'A1')");
+			System.out.println(Menu.LINE_SEPARATOR);
+			String input = in.nextLine();
+			System.out.println(Menu.LINE_SEPARATOR);
+			try {
+				return new Position(input);
+			} catch (IllegalArgumentException e) {
+				throw new InputMismatchException(input);
+			}
+		}
+	}
+
 	public int takeFire(Position target) {
 		System.out.println("TODO: implement takeFire");
 		Scanner in = new Scanner(System.in);
-		System.out.println("0 - miss; 1 - hit; 2 - sink; -1 exit");
+		System.out.println("0 - miss; 1 - hit; 2 - sink; -1 - already fired");
 		if (in.hasNextInt()) {
-			return in.nextInt();
+			int response = in.nextInt();
+			in.nextLine();
+			return response;
 		} else {
-			in.next();
+			in.nextLine();
 		}
 		return -1;
 	}

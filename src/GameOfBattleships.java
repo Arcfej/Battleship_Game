@@ -44,6 +44,8 @@ public class GameOfBattleships {
 	 */
 	private Player passivePlayer;
 
+	private boolean end;
+
 	/**
 	 * Default constructor of the class.
 	 * 
@@ -58,6 +60,7 @@ public class GameOfBattleships {
 		player2 = new AI();
 		activePlayer = player1;
 		passivePlayer = player2;
+		end = false;
 	}
 	
 	/**
@@ -69,7 +72,6 @@ public class GameOfBattleships {
 		passivePlayer.placeShips(this, in);
 		
 		// Loop: Firing on each other.
-		boolean end = false;
 		while (!end) {
 			menu.saveGame();
 			System.out.println("TODO: what if save unsuccessful?");
@@ -78,47 +80,25 @@ public class GameOfBattleships {
 			displayGrids();
 
 			Position target;
-			// Loop: get a valid input from the user
-			while (true) {
+			boolean valid = false;
+			// Loop: get a valid target or input from the player
+			while (!valid) {
+				// Try getting a valid target/input from the user.
 				try {
-					target = askCoordinate();
+					target = activePlayer.askCoordinate(in);
 				} catch (InputMismatchException e) {
 					// Exit the game if the user would like to.
 					if (e.getMessage().equals("Exit")) return;
-					// Continue asking a valid input from the user
 					else {
-					    System.out.println("\nNot a valid target. (For exit, type in 'Exit')");
+						// Continue asking a valid input from the user
+						displayGrids();
+					    System.out.println("Not a valid target. (For exit, type in 'Exit')");
                         continue;
                     }
 				}
-				System.out.println("TODO: check if the target is previously fired upon");
-				break;
-			}
-			// Fire on the target provided by the player
-			switch(passivePlayer.takeFire(target)) {
-				// Missed
-				case 0:
-					System.out.println("TODO: increase misses");
-					rounds++;
-					switchPlayers();
-					break;
-				// Hit
-				case 1:
-					System.out.println("TODO: increase hits");
-					break;
-				// Sank
-				case 2:
-					System.out.println("TODO: implement sank possibilities");
-					System.out.println("1 - all the ships sank");
-					if (in.hasNextInt() && in.nextInt() == 1) {
-						end = true;
-					}
-					break;
-				// Exit
-				case -1:
-					return;
-				default:
-					System.out.println("Not a valid input!");
+
+				valid = fire(target);
+				if (!valid) displayGrids();
 			}
 		}
 		
@@ -126,24 +106,6 @@ public class GameOfBattleships {
 		System.out.println("TODO: calculate score for winner");
 		menu.deleteSavedGame();
 		System.out.println("TODO: what if delete unsuccessful?");
-	}
-	
-	/**
-	 * Ask for coordinates from the active player to fire upon.
-	 * 
-	 * @return the position of the target.
-	 * @throws InputMismatchException when the input provided by the user is not a coordinate.
-	 * 								  The exception contains the input in its message.
-	 */
-	private Position askCoordinate() throws InputMismatchException {
-		System.out.println("What is your target? (e.g. 'A1')");
-		System.out.println(Menu.LINE_SEPARATOR);
-		String input = in.nextLine();
-		try {
-			return new Position(input);
-		} catch (IllegalArgumentException e) {
-			throw new InputMismatchException(input);
-		}
 	}
 
 	/**
@@ -235,6 +197,44 @@ public class GameOfBattleships {
 				"%" + Menu.COLUMN_WIDTH + "." + Menu.COLUMN_WIDTH + "s" + Menu.COLUMN_SEPARATOR,
 				content + " ".repeat((int) Math.ceil(Menu.COLUMN_WIDTH / 2f) - 1)
 		);
+	}
+
+	/**
+	 * Fires on the passive player with the given coordinates.
+	 *
+	 * @param target to fire upon.
+	 * @return true if the fire was successful. False if there was a problem.
+	 */
+	private boolean fire(Position target) {
+		// Fire on the target provided by the player
+		switch(passivePlayer.takeFire(target)) {
+			// Missed
+			case 0:
+				System.out.println("TODO: increase misses");
+				rounds++;
+				switchPlayers();
+				break;
+			// Hit
+			case 1:
+				System.out.println("TODO: increase hits");
+				break;
+			// Sank
+			case 2:
+				System.out.println("TODO: implement sank possibilities");
+				System.out.println("1 - all the ships sank");
+				if (in.hasNextInt() && in.nextInt() == 1) {
+					end = true;
+				}
+				in.nextLine();
+				break;
+
+			// The target is already fired upon
+			case -1:
+				System.out.println("TODO: Indicate to a human player that the target is already fired upon.");
+			default:
+				return false; // Fire cannot been executed
+		}
+		return true; // The fire is done, return true
 	}
 	
 	/**
