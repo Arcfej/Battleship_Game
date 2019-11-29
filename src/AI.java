@@ -13,6 +13,12 @@ public class AI extends Player {
         rn = new Random();
     }
 
+    /**
+     * Place the AI's ships on its battlefield.
+     *
+     * @param game The current game session. It is used for displaying the updated battlefield.
+     * @param in Could be null, it's not used in this method which override the parent (Player) class's method.
+     */
     @Override
     public void placeShips(GameOfBattleships game, Scanner in) {
         int count = 0; // Used for counting the placed ships.
