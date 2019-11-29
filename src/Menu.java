@@ -41,6 +41,9 @@ public class Menu {
 	 */
 	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "—");
 
+	private static final String GAME_TITLE = "GAME OF BATTLESHIPS";
+	private static final int SPACE_TILL_TITLE = (int) Math.ceil((LINE_SEPARATOR.length() - GAME_TITLE.length()) / 2f);
+
 	/**
 	 * The character which separates the columns of a battlefield.
 	 */
@@ -99,9 +102,7 @@ public class Menu {
 		Scanner in = new Scanner(System.in);
 
 		// Show the menu until the user exits the program in displayMenu()
-		while (true) {
-			menu.displayMenu(in);
-		}
+		menu.displayMenu(in);
 	}
 	
 	/**
@@ -111,50 +112,58 @@ public class Menu {
 	 * @param in The input stream through the user communicates with the program.
 	 */
 	private void displayMenu(Scanner in) {
-		// Display the menu options
-		System.out.println();
-		System.out.println("Choose one of the options:");
-		System.out.println(LINE_SEPARATOR);
-		System.out.println("1) New Game");
-		// Display the Load Game option only if there is a saved game.
-		if (hasSavedGame) {
-			System.out.println("2) Load Game");
-		}
-		System.out.println("3) Leaderboard");
-		System.out.println("0) Exit");
-		System.out.println(LINE_SEPARATOR);
-		
-		// Validate the input from the user.
-		if (in.hasNextInt()) {
-			int command = in.nextInt();
-			// Take the scanner to the next line after reading the number.
-			in.nextLine();
-			switch (command) {
-				// Exit the game
-				case 0:
-					System.exit(0);
-					break;
-				// Start a new game
-				case 1:
-					newGame(in);
-					break;
-				// Show the leaderboard
-				case 3:
-					showLeaderboard();
-					break;
-				// Load the saved game if there is any
-				case 2:
-					if (hasSavedGame) {
-						loadGame(in);
-						break;
-					}
-				// Display error message in any other case
-				default:
-					invalidMenuChoice();
+		boolean exit = false;
+		while (!exit) {
+			System.out.println();
+			System.out.println(LINE_SEPARATOR);
+			System.out.printf("%" + (SPACE_TILL_TITLE + GAME_TITLE.length()) + "s\n", GAME_TITLE);
+			System.out.println(LINE_SEPARATOR);
+			// Display the menu options
+			System.out.println();
+			System.out.println("Choose one of the options:");
+			System.out.println(LINE_SEPARATOR);
+			System.out.println("1) New Game");
+			// Display the Load Game option only if there is a saved game.
+			if (hasSavedGame) {
+				System.out.println("2) Load Game");
 			}
-		} else {
-			in.nextLine();
-			invalidMenuChoice();
+			System.out.println("3) Leaderboard");
+			System.out.println("0) Exit");
+			System.out.println(LINE_SEPARATOR);
+
+			// Validate the input from the user.
+			if (in.hasNextInt()) {
+				int command = in.nextInt();
+				// Take the scanner to the next line after reading the number.
+				in.nextLine();
+				System.out.println(LINE_SEPARATOR);
+				switch (command) {
+					// Exit the game
+					case 0:
+						exit = true;
+						break;
+					// Start a new game
+					case 1:
+						newGame(in);
+						break;
+					// Show the leaderboard
+					case 3:
+						showLeaderboard();
+						break;
+					// Load the saved game if there is any
+					case 2:
+						if (hasSavedGame) {
+							loadGame(in);
+							break;
+						}
+					// Display error message in any other case
+					default:
+						invalidMenuChoice();
+				}
+			} else {
+				in.nextLine();
+				invalidMenuChoice();
+			}
 		}
 	}
 	
@@ -163,8 +172,6 @@ public class Menu {
 	 * Displays an error message to the user.
 	 */
 	private void invalidMenuChoice() {
-		System.out.println();
-		System.out.println(LINE_SEPARATOR);
 		System.out.println("Valid inputs are numbers listed bellow.");
 	}
 	

@@ -81,8 +81,9 @@ public class Player {
 						System.out.println(error);
 						System.out.println(Menu.LINE_SEPARATOR);
 					}
-					System.out.printf("Place your %s (%d long).\n", getShipName(shipLength), shipLength);
+					System.out.printf("%s, please place your %s (%d long).\n", name, getShipName(shipLength), shipLength);
 					System.out.println("Where would you like it's top-left end?");
+					System.out.println(Menu.LINE_SEPARATOR);
 					try {
 						position = new Position(in.nextLine());
 						// Only ask for the direction if there wasn't an error while asking for the position (which is caught),
@@ -211,7 +212,7 @@ public class Player {
 	 */
 	private int getDirection(Scanner in) {
 		char direction;
-		// Continue asking the the user until they provide a valid input.
+		// Continue asking the user until they provide a valid input.
 		while (true) {
 			System.out.println("Would you like it to be horizontal ('h') or vertical ('v')?");
 			String input = in.nextLine();
