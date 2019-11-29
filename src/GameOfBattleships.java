@@ -54,8 +54,8 @@ public class GameOfBattleships {
 		this.menu = menu;
 		this.in = in;
 		rounds = 1;
-		player1 = new Player("Player 1");
-		player2 = new Player("Player 2");
+		player1 = new AI();
+		player2 = new AI();
 		activePlayer = player1;
 		passivePlayer = player2;
 	}
