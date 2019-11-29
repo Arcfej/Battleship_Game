@@ -33,12 +33,15 @@ public class Position {
 	}
 
 	/**
-	 * 'A' = 1, not 0
+	 * Calculate the character which represents the column-index of a position.
+	 * The valid indexes start from 1 and ends at {@code Menu.NUMBER_OF_COLUMNS}
 	 *
-	 * @param i
-	 * @return
+	 * @param i the index of the column to calculate from.
+	 * @return the character which represents the given index.
+	 * If the index is not in the valid range it returns ' ' (space).
 	 */
 	public static char calculateColumnIndexFromInteger(int i) {
+		if (i <= 0 || i > Menu.NUMBER_OF_COLUMNS) return ' ';
 		return (char) (i + 'A' - 1);
 	}
 
@@ -116,6 +119,8 @@ public class Position {
 	}
 
     /**
+	 * Return which row the position is in.
+	 *
      * @return the row-index of the position.
      */
 	public int getRow() {
@@ -123,6 +128,8 @@ public class Position {
 	}
 
     /**
+	 * Return which column the position is in.
+	 *
      * @return the column-index of the position.
      */
 	public int getColumn() {

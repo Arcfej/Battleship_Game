@@ -26,7 +26,7 @@ public class Player {
 	/**
 	 * The remaining, not sank fleet of the player.
 	 */
-	private Ship[] fleet;
+	protected Ship[] fleet;
 
 	/**
 	 * The battlefield of the player with its ships placed (after placeShips() was called).
@@ -119,7 +119,7 @@ public class Player {
 	 * @param length The length of the ship.
 	 * @return true if the ship is allowed to place at the given position.
 	 */
-	private boolean isPlacementAllowed(Position position, int direction, int length) {
+	protected boolean isPlacementAllowed(Position position, int direction, int length) {
 		// The coordinates of the position inside the grid
 		int x = position.getColumn() - 1;
 		int y = position.getRow() - 1;
@@ -163,7 +163,7 @@ public class Player {
 	 *
 	 * @param ship The newly placed ship
 	 */
-	private void updateFieldsWithNewShip(Ship ship) {
+	protected void updateFieldsWithNewShip(Ship ship) {
 		// The coordinates of the top-left end of the ship
 		int x = ship.getPosition().getColumn() - 1;
 		int y = ship.getPosition().getRow() - 1;
