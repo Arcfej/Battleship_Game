@@ -102,7 +102,32 @@ public class Menu {
 		Scanner in = new Scanner(System.in);
 
 		// Show the menu until the user exits the program in displayMenu()
-		menu.displayMenu(in);
+		boolean exit = false;
+		while (!exit) {
+			System.out.println(
+					",-,---.     .  .  .          .             \n" +
+							" '|___/ ,-. |- |- |  ,-. ,-. |-. . ,-. ,-. \n" +
+							" ,|   \\ ,-| |  |  |  |-' `-. | | | | | `-. \n" +
+							"`-^---' `-^ `' `' `' `-' `-' ' ' ' |-' `-' \n" +
+							"                                   |       \n" +
+							"                                   '       \n"
+			);
+			System.out.println(
+					"  __ )          |    |    |              |     _)              \n" +
+					"  __ \\    _` |  __|  __|  |   _ \\   __|  __ \\   |  __ \\    __| \n" +
+					"  |   |  (   |  |    |    |   __/ \\__ \\  | | |  |  |   | \\__ \\ \n" +
+					" ____/  \\__,_| \\__| \\__| _| \\___| ____/ _| |_| _|  .__/  ____/ \n" +
+					"                                                  _|           \n"
+			);
+			System.out.println(
+					" ____   ___  ______ ______ __     ____  __  __  __ __ ____   __ \n" +
+					" || )) // \\\\ | || | | || | ||    ||    (( \\ ||  || || || \\\\ (( \\\n" +
+					" ||=)  ||=||   ||     ||   ||    ||==   \\\\  ||==|| || ||_//  \\\\ \n" +
+					" ||_)) || ||   ||     ||   ||__| ||___ \\_)) ||  || || ||    \\_))\n"
+			);
+
+			exit = menu.displayMenu(in);
+		}
 	}
 	
 	/**
@@ -110,71 +135,69 @@ public class Menu {
 	 * One of them is to exit the program.
 	 * 
 	 * @param in The input stream through the user communicates with the program.
+	 * @return true if the user wants to exit the program.
 	 */
-	private void displayMenu(Scanner in) {
-		boolean exit = false;
-		while (!exit) {
-			System.out.println();
-			System.out.println(LINE_SEPARATOR);
-			System.out.printf("%" + (SPACE_TILL_TITLE + GAME_TITLE.length()) + "s\n", GAME_TITLE);
-			System.out.println(LINE_SEPARATOR);
+	private boolean displayMenu(Scanner in) {
+		boolean error = false;
+		// Display the menu until there is an error with the input. Valid input will call return in the loop.
+		while (true) {
+			// Display the game title
+//			System.out.println();
+//			System.out.println(LINE_SEPARATOR);
+//			System.out.printf("%" + (SPACE_TILL_TITLE + GAME_TITLE.length()) + "s\n", GAME_TITLE);
+//			System.out.println(LINE_SEPARATOR);
+//			System.out.println();
+
+			// Display an error message if there was an error.
+			if (error) System.out.println("Valid inputs are numbers listed bellow.");
+
 			// Display the menu options
 			System.out.println();
 			System.out.println("Choose one of the options:");
 			System.out.println(LINE_SEPARATOR);
 			System.out.println("1) New Game");
 			// Display the Load Game option only if there is a saved game.
-			if (hasSavedGame) {
-				System.out.println("2) Load Game");
-			}
+			if (hasSavedGame) System.out.println("2) Load Game");
 			System.out.println("3) Leaderboard");
 			System.out.println("0) Exit");
 			System.out.println(LINE_SEPARATOR);
 
 			// Validate the input from the user.
+			error = false; // Assume there won't be any error
 			if (in.hasNextInt()) {
 				int command = in.nextInt();
-				// Take the scanner to the next line after reading the number.
-				in.nextLine();
-				System.out.println(LINE_SEPARATOR);
+				in.nextLine(); // Take the scanner to the next line after reading the number.
+
 				switch (command) {
 					// Exit the game
 					case 0:
-						exit = true;
-						break;
+						return true;
 					// Start a new game
 					case 1:
 						newGame(in);
-						break;
+						return  false;
 					// Show the leaderboard
 					case 3:
 						showLeaderboard();
-						break;
+						return false;
 					// Load the saved game if there is any
 					case 2:
 						if (hasSavedGame) {
 							loadGame(in);
-							break;
+							return false;
 						}
 					// Display error message in any other case
 					default:
-						invalidMenuChoice();
+						error = true;
 				}
 			} else {
 				in.nextLine();
-				invalidMenuChoice();
+				error = true;
 			}
+			System.out.println(LINE_SEPARATOR);
 		}
 	}
-	
-	/**
-	 * Called when the user entered an invalid command in the Main Menu.
-	 * Displays an error message to the user.
-	 */
-	private void invalidMenuChoice() {
-		System.out.println("Valid inputs are numbers listed bellow.");
-	}
-	
+
 	/**
 	 * Starts a new game.
 	 * 
