@@ -57,7 +57,7 @@ public class Menu {
 	/**
 	 * The character which is used to display the hits on a ship.
 	 */
-	public static final char HIT = 'Ø';
+	public static final char HIT = 'X';
 	
 	/**
 	 * The character which is used to display the unhit ships if they are visible.

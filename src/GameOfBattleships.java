@@ -98,7 +98,10 @@ public class GameOfBattleships {
 				}
 
 				valid = fire(target);
-				if (!valid) displayGrids();
+				if (!valid) {
+					displayGrids();
+					System.out.println("You have already fired to that target. Choose another one!");
+				}
 			}
 		}
 		
@@ -210,17 +213,17 @@ public class GameOfBattleships {
 		switch(passivePlayer.takeFire(target)) {
 			// Missed
 			case 0:
-				System.out.println("TODO: increase misses");
+				activePlayer.increaseMisses();
 				rounds++;
 				switchPlayers();
 				break;
 			// Hit
 			case 1:
-				System.out.println("TODO: increase hits");
+				activePlayer.increaseHits();
 				break;
 			// Sank
 			case 2:
-				System.out.println("TODO: implement sank possibilities");
+				activePlayer.increaseHits();
 				System.out.println("1 - all the ships sank");
 				if (in.hasNextInt() && in.nextInt() == 1) {
 					end = true;

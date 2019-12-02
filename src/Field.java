@@ -53,6 +53,11 @@ public class Field {
         this.shipId = shipId;
     }
 
+    public void takeFire(boolean isSank) {
+        isFired = true;
+        this.isSank = isSank;
+    }
+
     /**
      * Return the position of the field on the battlefield.
      *

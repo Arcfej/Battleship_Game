@@ -21,7 +21,6 @@ public class AI extends Player {
      */
     @Override
     public void placeShips(GameOfBattleships game, Scanner in) {
-        int count = 0; // Used for counting the placed ships.
         for (int shipLength = 4; shipLength >= 1; shipLength--) {
             for (int pieces = 5 - shipLength; pieces >= 1; pieces--) {
                 Position position; // Where to place the top-left end of the ship.
@@ -37,11 +36,10 @@ public class AI extends Player {
                     if (isPlacementAllowed(position, direction, shipLength)) {
                         // Everything's ok, add the new ship.
                         Ship newShip = new Ship(shipLength, position, direction);
-                        fleet[count] = newShip;
+                        fleet.add(newShip);
                         updateFieldsWithNewShip(newShip); // Update the AI's battlefield
-                        count++;
                         valid = true; // Exit the loop
-                        }
+                    }
                 }
             }
         }

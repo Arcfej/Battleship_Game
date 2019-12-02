@@ -1,5 +1,8 @@
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 /**
  * Represents a player of the Battleship game.
@@ -27,7 +30,7 @@ public class Player {
 	/**
 	 * The remaining, not sank fleet of the player.
 	 */
-	protected Ship[] fleet;
+	protected List<Ship> fleet;
 
 	/**
 	 * The battlefield of the player with its ships placed (after placeShips() was called).
@@ -44,7 +47,7 @@ public class Player {
 	    this.name = name;
 		hits = 0;
 		misses = 0;
-		fleet = new Ship[10];
+		fleet = new ArrayList<>(10);
 		// Fill up the battlefield with empty fields without ships.
         battlefield = new Field[Menu.NUMBER_OF_ROWS][Menu.NUMBER_OF_COLUMNS];
 		for (int i = 0, battlefieldLength = battlefield.length; i < battlefieldLength; i++) {
@@ -65,7 +68,6 @@ public class Player {
 	 */
 	public void placeShips(GameOfBattleships game, Scanner in) {
 		// TODO save the state after every successful placement
-		int count = 0; // Used for counting the placed ships.
 		String error = ""; // Used for displaying error messages.
 
 		// Get the input for the 1 x 4 long, 2 x 3 long, 3 x 2 long and 4 x 1 long ships
@@ -95,9 +97,8 @@ public class Player {
 						if (isPlacementAllowed(position, direction, shipLength)) {
 							// Everything's ok, add the new ship.
 							Ship newShip = new Ship(shipLength, position, direction);
-							fleet[count] = newShip;
+							fleet.add(newShip);
 							updateFieldsWithNewShip(newShip); // Update the player's battlefield
-							count++;
 							error = ""; // There was no error through the current iteration
 							valid = true; // Exit the loop
 						} else {
@@ -251,17 +252,31 @@ public class Player {
 	}
 
 	public int takeFire(Position target) {
-		System.out.println("TODO: implement takeFire");
-		Scanner in = new Scanner(System.in);
-		System.out.println("0 - miss; 1 - hit; 2 - sink; -1 - already fired");
-		if (in.hasNextInt()) {
-			int response = in.nextInt();
-			in.nextLine();
-			return response;
-		} else {
-			in.nextLine();
+		Field field = battlefield[target.getRow() - 1][target.getColumn() - 1];
+		// Return -1 if the field is already been fired
+		if (field.isFired()) return -1;
+		// Return 0 if the field has no ship on it
+		else if (!field.hasShip()) return 0;
+		else {
+			// Find the ship which was fired upon
+			Predicate<Ship> condition = ship -> ship.getId() == field.getShipId();
+			Ship attacked = fleet.stream()
+					.filter(condition)
+					.findAny()
+					.orElse(null);
+			if (attacked == null) throw new IllegalArgumentException("The position contains a wrong ship id: " + target);
+			// Register the fire on the ship
+			attacked.takeHit();
+			field.takeFire(attacked.getSankPercent() == 100);
+			// Return 1 if the ship's not yet sunk
+			if (attacked.getSankPercent() != 100) return 1;
+			else {
+				// Return 2 if the ship sank and remove it from the fleet.
+				fleet.removeIf(condition);
+				System.out.println("TODO: Update all the fields of the ship with sank");
+				return 2;
+			}
 		}
-		return -1;
 	}
 
 	/**
@@ -282,6 +297,10 @@ public class Player {
         return hits;
     }
 
+	public void increaseHits() {
+		hits++;
+	}
+
 	/**
 	 * Return the number of fires committed by the player which did not hit a ship.
 	 *
@@ -290,6 +309,10 @@ public class Player {
 	public int getMisses() {
         return misses;
     }
+
+    public void increaseMisses() {
+		misses++;
+	}
 
 	/**
 	 * Return a row of displayable data about the player's battlefield.
