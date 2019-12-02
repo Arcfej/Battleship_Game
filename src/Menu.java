@@ -52,7 +52,7 @@ public class Menu {
 	/**
 	 * The character which is used to display the missed shots.
 	 */
-	public static final char MISSED_SHOT = '•';
+	public static final char MISSED_SHOT = '-';
 	
 	/**
 	 * The character which is used to display the hits on a ship.
@@ -104,6 +104,8 @@ public class Menu {
 		// Show the menu until the user exits the program in displayMenu()
 		boolean exit = false;
 		while (!exit) {
+		    System.out.println();
+            System.out.println();
 			System.out.println(
 					"  __ )          |    |    |              |     _)              \n" +
 					"  __ \\    _` |  __|  __|  |   _ \\   __|  __ \\   |  __ \\    __| \n" +

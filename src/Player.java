@@ -254,27 +254,54 @@ public class Player {
 	public int takeFire(Position target) {
 		Field field = battlefield[target.getRow() - 1][target.getColumn() - 1];
 		// Return -1 if the field is already been fired
-		if (field.isFired()) return -1;
+		if (field.isFired()) {
+			return -1;
+		}
 		// Return 0 if the field has no ship on it
-		else if (!field.hasShip()) return 0;
-		else {
+		else if (!field.hasShip()) {
+			field.takeFire(false);
+			return 0;
+		} else {
 			// Find the ship which was fired upon
 			Predicate<Ship> condition = ship -> ship.getId() == field.getShipId();
 			Ship attacked = fleet.stream()
 					.filter(condition)
 					.findAny()
 					.orElse(null);
-			if (attacked == null) throw new IllegalArgumentException("The position contains a wrong ship id: " + target);
+			if (attacked == null) {
+				throw new IllegalArgumentException("The position contains a wrong ship id: " + target);
+			}
 			// Register the fire on the ship
 			attacked.takeHit();
 			field.takeFire(attacked.getSankPercent() == 100);
 			// Return 1 if the ship's not yet sunk
-			if (attacked.getSankPercent() != 100) return 1;
-			else {
+			if (attacked.getSankPercent() != 100) {
+				return 1;
+			} else {
 				// Return 2 if the ship sank and remove it from the fleet.
 				fleet.removeIf(condition);
 				System.out.println("TODO: Update all the fields of the ship with sank");
+				sinkShip(attacked);
 				return 2;
+			}
+		}
+	}
+
+	private void sinkShip(Ship ship) {
+		// The coordinates of the top-left end of the ship
+		int x = ship.getPosition().getColumn() - 1;
+		int y = ship.getPosition().getRow() - 1;
+
+		// Diverge based on the ship's direction
+		if (ship.getDirection() == 0) {
+			// Update the field at the ship's position and the ones right from it according to its length
+			for (int column = x; column < x + ship.getSize(); column++) {
+				battlefield[y][column].takeFire(true);
+			}
+		} else if (ship.getDirection() == 1) {
+			// Update the field at the ship's position and the ones below it according to its length
+			for (int row = y; row < y + ship.getSize(); row++) {
+				battlefield[row][x].takeFire(true);
 			}
 		}
 	}

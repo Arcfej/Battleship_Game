@@ -98,7 +98,7 @@ public class GameOfBattleships {
 				}
 
 				valid = fire(target);
-				if (!valid) {
+				if (!valid && !(activePlayer instanceof AI)) {
 					displayGrids();
 					System.out.println("You have already fired to that target. Choose another one!");
 				}
