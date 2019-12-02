@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -57,9 +58,26 @@ public class GameOfBattleships {
 		this.in = in;
 		rounds = 1;
 		player1 = new AI();
-		player2 = new AI();
-		activePlayer = player1;
-		passivePlayer = player2;
+
+        String name;
+        while (true) {
+            System.out.println("What is your name?");
+            System.out.println(Menu.LINE_SEPARATOR);
+            name = in.nextLine();
+            if (!name.isBlank()) break;
+            System.out.println(Menu.LINE_SEPARATOR);
+        }
+        System.out.println(Menu.LINE_SEPARATOR);
+        System.out.println("Welcome, " + name + "!");
+		player2 = new Player(name);
+
+        activePlayer = player1;
+        passivePlayer = player2;
+
+        // Randomize who start
+        if ((new Random()).nextInt(2) == 0) {
+            switchPlayers();
+        }
 		end = false;
 	}
 	
@@ -233,7 +251,6 @@ public class GameOfBattleships {
 
 			// The target is already fired upon
 			case -1:
-				System.out.println("TODO: Indicate to a human player that the target is already fired upon.");
 			default:
 				return false; // Fire cannot been executed
 		}

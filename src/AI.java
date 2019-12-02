@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -27,10 +28,7 @@ public class AI extends Player {
                 int direction; // 0: horizontal, 1: vertical
                 boolean valid = false; // Indicate whether the placement is valid or not.
                 while (!valid) {
-                    position = new Position(String.valueOf(
-                                    Position.calculateColumnIndexFromInteger(rn.nextInt(Menu.NUMBER_OF_COLUMNS) + 1)) +
-                                    (rn.nextInt(Menu.NUMBER_OF_ROWS) + 1)
-                    );
+                    position = askCoordinate(in);
                     direction = rn.nextInt(2);
                     // Check if the given place for the ship is allowed or not
                     if (isPlacementAllowed(position, direction, shipLength)) {
@@ -43,5 +41,37 @@ public class AI extends Player {
                 }
             }
         }
+    }
+
+    @Override
+    public Position askCoordinate(Scanner in) {
+        return new Position(String.valueOf(
+                Position.calculateColumnIndexFromInteger(rn.nextInt(Menu.NUMBER_OF_COLUMNS) + 1)) +
+                (rn.nextInt(Menu.NUMBER_OF_ROWS) + 1)
+        );
+    }
+
+    @Override
+    public Character[] getBattlefieldData(int rowIndex) {
+        Character[] data = new Character[Menu.NUMBER_OF_COLUMNS];
+
+        Field[] row = battlefield[rowIndex];
+        for (int i = 0, columnLength = row.length; i < columnLength; i++) {
+            Field field = row[i];
+
+            // Fill up the data array based on the fields' status
+            char c;
+            if (field.hasShip()) {
+                if (field.isSank()) c = Menu.SANK_SHIP;
+                else if (field.isFired()) c = Menu.HIT;
+                else c = ' ';
+            } else {
+                if (field.isFired()) c = Menu.MISSED_SHOT;
+                else c = ' ';
+            }
+
+            data[i] = c;
+        }
+        return data;
     }
 }

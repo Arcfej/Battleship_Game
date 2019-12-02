@@ -52,7 +52,7 @@ public class Menu {
 	/**
 	 * The character which is used to display the missed shots.
 	 */
-	public static final char MISSED_SHOT = '-';
+	public static final char MISSED_SHOT = '—';
 	
 	/**
 	 * The character which is used to display the hits on a ship.
@@ -155,6 +155,8 @@ public class Menu {
 			if (in.hasNextInt()) {
 				int command = in.nextInt();
 				in.nextLine(); // Take the scanner to the next line after reading the number.
+
+                System.out.println(LINE_SEPARATOR);
 
 				switch (command) {
 					// Exit the game

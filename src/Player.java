@@ -36,7 +36,7 @@ public class Player {
 	 * The battlefield of the player with its ships placed (after placeShips() was called).
 	 * The first dimension of the array is the rows, and the second dimension is the cells inside the rows.
 	 */
-	private Field[][] battlefield;
+    protected Field[][] battlefield;
 
 	/**
 	 * The default constructor of the class.
@@ -239,7 +239,7 @@ public class Player {
 	 */
 	public Position askCoordinate(Scanner in) throws InputMismatchException {
 		while (true) {
-			System.out.println("What is your target? (e.g. 'A1')");
+			System.out.println(name + ", what is your target? (e.g. 'A1')");
 			System.out.println(Menu.LINE_SEPARATOR);
 			String input = in.nextLine();
 			System.out.println(Menu.LINE_SEPARATOR);
@@ -280,7 +280,6 @@ public class Player {
 			} else {
 				// Return 2 if the ship sank and remove it from the fleet.
 				fleet.removeIf(condition);
-				System.out.println("TODO: Update all the fields of the ship with sank");
 				sinkShip(attacked);
 				return 2;
 			}
