@@ -82,7 +82,7 @@ public class AI extends Player {
                 if (field.isSank()) c = Menu.SANK_SHIP;
                 else if (field.isFired()) c = Menu.HIT;
                 // TODO make the user decide to display the ships or not
-                else c = Menu.SHIP;
+                else c = ' ';
             } else {
                 if (field.isFired()) c = Menu.MISSED_SHOT;
                 else c = ' ';

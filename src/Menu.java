@@ -302,6 +302,11 @@ public class Menu {
 		return true;
 	}
 
+	/**
+	 * Load the leader board from the disk.
+	 *
+	 * @return the leader board as a list.
+	 */
 	private List<Score> readScores() {
 		if (!Files.isReadable(SCORES_PATH)) {
 			return null;

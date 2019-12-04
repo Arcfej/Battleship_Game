@@ -46,6 +46,9 @@ public class GameOfBattleships {
 	 */
 	private Player passivePlayer;
 
+	/**
+	 * True if the play ended. (Some of the player sank all the ships of the other.)
+	 */
 	private boolean end;
 
 	/**
