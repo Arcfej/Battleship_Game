@@ -1,8 +1,14 @@
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Represents a player of the game controlled by the computer.
+ */
 public class AI extends Player {
 
+    /**
+     * Used to generate random numbers.
+     */
     private final Random rn;
 
     /**
@@ -42,6 +48,12 @@ public class AI extends Player {
         }
     }
 
+    /**
+     * Generate a coordinate for the AI to fire upon.
+     *
+     * @param in Could be null. It's not used in this method which overrides the parent (Player) class's method.
+     * @return the new coordinate to fire upon.
+     */
     @Override
     public Position askCoordinate(Scanner in) {
         return new Position(String.valueOf(
@@ -50,6 +62,12 @@ public class AI extends Player {
         );
     }
 
+    /**
+     * Return a row of displayable data about the AI's battlefield.
+     *
+     * @param rowIndex The index of the row to get data from.
+     * @return The array of displayable data as characters.
+     */
     @Override
     public Character[] getBattlefieldData(int rowIndex) {
         Character[] data = new Character[Menu.NUMBER_OF_COLUMNS];
@@ -63,6 +81,7 @@ public class AI extends Player {
             if (field.hasShip()) {
                 if (field.isSank()) c = Menu.SANK_SHIP;
                 else if (field.isFired()) c = Menu.HIT;
+                // TODO make the user decide to display the ships or not
                 else c = ' ';
             } else {
                 if (field.isFired()) c = Menu.MISSED_SHOT;

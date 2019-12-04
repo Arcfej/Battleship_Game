@@ -59,6 +59,7 @@ public class GameOfBattleships {
 		rounds = 1;
 		player1 = new AI();
 
+		// Ask a name from the human player.
         String name;
         while (true) {
             System.out.println("What is your name?");
@@ -69,12 +70,13 @@ public class GameOfBattleships {
         }
         System.out.println(Menu.LINE_SEPARATOR);
         System.out.println("Welcome, " + name + "!");
+
 		player2 = new Player(name);
 
         activePlayer = player1;
         passivePlayer = player2;
 
-        // Randomize who start
+        // Randomize who starts
         if ((new Random()).nextInt(2) == 0) {
             switchPlayers();
         }
@@ -91,17 +93,20 @@ public class GameOfBattleships {
 
 		// Loop: Firing on each other.
 		while (!end) {
-			menu.saveGame();
-			System.out.println("TODO: what if save unsuccessful?");
-			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+			// Save the game at every start of the turns.
+			if (menu.saveGame()) {
+				System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+			} else {
+				System.out.println("TODO: what if save unsuccessful?");
+			}
 
 			displayGrids();
 
 			Position target;
 			boolean valid = false;
-			// Loop: get a valid target or input from the player
+			// Loop: get a valid target or input from the player which hasn't been fired upon.
 			while (!valid) {
-				// Try getting a valid target/input from the user.
+				// Try getting a valid target/input from the user (e.g. B5).
 				try {
 					target = activePlayer.askCoordinate(in);
 				} catch (InputMismatchException e) {
@@ -116,9 +121,10 @@ public class GameOfBattleships {
 				}
 
 				valid = fire(target);
+				// If the player is not an AI and already fired upon the target warn them about it.
 				if (!valid && !(activePlayer instanceof AI)) {
 					displayGrids();
-					System.out.println("You have already fired to that target. Choose another one!");
+					System.out.println("You have already fired on that target. Choose another one!");
 				}
 			}
 		}
@@ -133,11 +139,13 @@ public class GameOfBattleships {
 	 * Displays the battlefields to the user(s).
 	 */
 	public void displayGrids() {
-		// Numbers which help positioning the labels above the tables to the middle.
-	    int spaceTillFirstLabel = (int) Math.ceil((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
-	    int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();
-	    int spaceTillSecondLabel = (int) Math.ceil((Menu.TABLE_WIDTH - activePlayer.getName().length()) / 2f);
-	    int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillSecondLabel + activePlayer.getName().length());
+		// TODO add argument who should be displayed first
+		// Numbers which help positioning the labels above the tables to the center.
+	    final int spaceTillFirstLabel = (int) Math.ceil((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
+	    final int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();
+	    final int spaceTillSecondLabel = (int) Math.ceil((Menu.TABLE_WIDTH - activePlayer.getName().length()) / 2f);
+	    final int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillSecondLabel + activePlayer.getName().length());
+
 	    // Display the labels above the tables
 	    System.out.println();
 	    System.out.printf(
@@ -251,8 +259,9 @@ public class GameOfBattleships {
 
 			// The target is already fired upon
 			case -1:
+			// Fire cannot been executed
 			default:
-				return false; // Fire cannot been executed
+				return false;
 		}
 		return true; // The fire is done, return true
 	}

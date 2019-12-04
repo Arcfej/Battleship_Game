@@ -53,6 +53,11 @@ public class Field {
         this.shipId = shipId;
     }
 
+    /**
+     * Registers that the other player fired on this field.
+     *
+     * @param isSank true if the ship on this field has sunk.
+     */
     public void takeFire(boolean isSank) {
         isFired = true;
         this.isSank = isSank;

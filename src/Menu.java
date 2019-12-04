@@ -40,6 +40,9 @@ public class Menu {
 	 */
 	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "—");
 
+	/**
+	 * The title of the game line by line.
+	 */
 	private static final String[] GAME_TITLE = {
 			"  __ )          |    |    |              |     _)              \n",
 			"  __ \\    _` |  __|  __|  |   _ \\   __|  __ \\   |  __ \\    __| \n",
@@ -48,6 +51,9 @@ public class Menu {
 			"                                                  _|           \n"
 	};
 
+	/**
+	 * The space from the start of the line till the start of the title.
+	 */
 	private static final int SPACE_TILL_TITLE = (int) Math.floor((LINE_SEPARATOR.length() - GAME_TITLE[0].length()) / 2f);
 
 	/**

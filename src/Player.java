@@ -48,6 +48,7 @@ public class Player {
 		hits = 0;
 		misses = 0;
 		fleet = new ArrayList<>(10);
+
 		// Fill up the battlefield with empty fields without ships.
         battlefield = new Field[Menu.NUMBER_OF_ROWS][Menu.NUMBER_OF_COLUMNS];
 		for (int i = 0, battlefieldLength = battlefield.length; i < battlefieldLength; i++) {
@@ -67,7 +68,7 @@ public class Player {
 	 * @param in The input stream through the user communicates with the program.
 	 */
 	public void placeShips(GameOfBattleships game, Scanner in) {
-		// TODO save the state after every successful placement
+		// TODO save the state after every successful placement?
 		String error = ""; // Used for displaying error messages.
 
 		// Get the input for the 1 x 4 long, 2 x 3 long, 3 x 2 long and 4 x 1 long ships
@@ -249,6 +250,15 @@ public class Player {
         }
 	}
 
+	/**
+	 * Register a fire from the other player.
+	 *
+	 * @param target The target field the other player fire upon.
+	 * @return	-1 if the target is already fired upon.
+	 * 			 0 if the fire missed (there was no ship on the field).
+	 * 			 1 if the fire hit but the ship's not yet sunk.
+	 * 			 2 if the fire hit and the ship's sunk.
+	 */
 	public int takeFire(Position target) {
 		Field field = battlefield[target.getRow() - 1][target.getColumn() - 1];
 		// Return -1 if the field is already been fired
@@ -284,6 +294,11 @@ public class Player {
 		}
 	}
 
+	/**
+	 * Update the battlefield if a ship has sunk.
+	 *
+	 * @param ship which has sunk.
+	 */
 	private void sinkShip(Ship ship) {
 		// The coordinates of the top-left end of the ship
 		int x = ship.getPosition().getColumn() - 1;
@@ -321,6 +336,9 @@ public class Player {
         return hits;
     }
 
+	/**
+	 * Increase the number of hits committed by the player.
+	 */
 	public void increaseHits() {
 		hits++;
 	}
@@ -334,7 +352,10 @@ public class Player {
         return misses;
     }
 
-    public void increaseMisses() {
+	/**
+	 * Increase the number of misses committed by the player.
+	 */
+	public void increaseMisses() {
 		misses++;
 	}
 

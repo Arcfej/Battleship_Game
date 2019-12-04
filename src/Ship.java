@@ -6,7 +6,7 @@
 public class Ship {
 
     /**
-     * Used the generate the ids for the ships.
+     * Used to generate the ids for the ships.
      */
     private static int count = 0;
 
@@ -57,7 +57,7 @@ public class Ship {
     }
 
     /**
-     * Return the unique id of the ship.
+     * Returns the unique id of the ship.
      *
      * @return the id of the ship.
      */
@@ -66,7 +66,7 @@ public class Ship {
     }
 
     /**
-     * Return the size of the ship.
+     * Returns the size of the ship.
      *
      * @return the size of the ship.
      */
@@ -75,7 +75,7 @@ public class Ship {
     }
 
     /**
-     * Return the position of the top-left end of the ship.
+     * Returns the position of the top-left end of the ship.
      *
      * @return the top-left end of the ship.
      */
@@ -84,7 +84,7 @@ public class Ship {
     }
 
     /**
-     * Return the direction of the ship.
+     * Returns the direction of the ship.
      *
      * @return 0 if the ship is horizontal, 1 if vertical.
      */
@@ -93,7 +93,7 @@ public class Ship {
     }
 
     /**
-     * Return the percentage of damage the ship has received.
+     * Returns the percentage of damage the ship has received.
      *
      * @return a whole number between 0 and 100. 0 if it hasn't been hit and 100 if it sank.
      */
@@ -101,6 +101,9 @@ public class Ship {
         return sankPercent;
     }
 
+    /**
+     * Registers a hit on the ship.
+     */
     public void takeHit() {
         sankPercent = (int) ((double) ++hits / size * 100);
     }

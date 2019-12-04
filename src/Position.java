@@ -120,6 +120,7 @@ public class Position {
 
     /**
 	 * Return which row the position is in.
+	 * The valid indexes start from 1 and ends at {@code Menu.NUMBER_OF_ROWS}
 	 *
      * @return the row-index of the position.
      */
@@ -129,6 +130,7 @@ public class Position {
 
     /**
 	 * Return which column the position is in.
+	 * The valid indexes start from 1 and ends at {@code Menu.NUMBER_OF_COLUMNS}
 	 *
      * @return the column-index of the position.
      */
