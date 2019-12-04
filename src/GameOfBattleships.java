@@ -1,6 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 /**
  * Represents a Battleship game. Handles all the interactions between the players.
@@ -45,6 +46,9 @@ public class GameOfBattleships {
 	 */
 	private Player passivePlayer;
 
+	/**
+	 * True if the play ended. (Some of the player sank all the ships of the other.)
+	 */
 	private boolean end;
 
 	/**
@@ -128,11 +132,8 @@ public class GameOfBattleships {
 				}
 			}
 		}
+		endGame();
 
-		// Wrap up the game in the end (saving score, delete saved game).
-		System.out.println("TODO: calculate score for winner");
-		menu.deleteSavedGame();
-		System.out.println("TODO: what if delete unsuccessful?");
 	}
 
 	/**
@@ -250,11 +251,10 @@ public class GameOfBattleships {
 			// Sank
 			case 2:
 				activePlayer.increaseHits();
-				System.out.println("1 - all the ships sank");
-				if (in.hasNextInt() && in.nextInt() == 1) {
+				// If all the ships sank in the fleet, end the game.
+				if (passivePlayer.fleet.size() == 0) {
 					end = true;
 				}
-				in.nextLine();
 				break;
 
 			// The target is already fired upon
@@ -267,18 +267,46 @@ public class GameOfBattleships {
 	}
 
 	/**
-	 * @return the number of rounds the players played so far.
-	 */
-	public int getRounds() {
-		return rounds;
-	}
-
-	/**
 	 * Switch the active and passive player of the game.
 	 */
 	private void switchPlayers() {
 		Player holder = activePlayer;
 		activePlayer = passivePlayer;
 		passivePlayer = holder;
+	}
+
+	/**
+	 * Wrap up the game at the end. Saving the score of the winner, delete the saved game.
+	 */
+	private void endGame() {
+		// Display the final state of the game
+		displayGrids();
+		// Saving score for the winner.
+		int score = calculateScore();
+		System.out.printf("%s scored %d points.\n", activePlayer.getName(), score);
+		while (true) {
+			boolean success = menu.saveScore(new Score(activePlayer.getName(), score));
+			if (!success) {
+				System.out.println(Menu.LINE_SEPARATOR);
+				System.out.println("Save was unsuccessful. Would you like to try again? (y/n)");
+				String command = in.nextLine();
+				if (command.toLowerCase().equals("y")) continue;
+			}
+			break;
+		}
+		menu.deleteSavedGame();
+		System.out.println("TODO: what if delete unsuccessful?");
+	}
+
+	/**
+	 * Calculate the score of the winner.
+	 *
+	 * @return the calculated score.
+	 */
+	private int calculateScore() {
+		int rounds = (this.rounds % 2 == 1) ?
+				(int) Math.ceil((float) this.rounds / 2) : // The player started the game
+				this.rounds / 2; // The player was the second player
+		return (int) ((activePlayer.getHits() * 5 - activePlayer.getMisses() * 1.25) * 1000 / rounds);
 	}
 }

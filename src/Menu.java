@@ -1,7 +1,10 @@
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The main menu and entry point of the game. It handles all the interactions between the user(s) and the computer.
@@ -84,7 +87,12 @@ public class Menu {
 	/**
 	 * The file path to the saved game(s).
 	 */
-	private static final Path SAVE_PATH = Paths.get("/save/save01.save");
+	private static final Path SAVE_PATH = Paths.get(".save/save01.save");
+
+	/**
+	 * The file path to the top scores.
+	 */
+	private static final Path SCORES_PATH = Paths.get(".scores.txt");
 	
 	/**
 	 * The current game.
@@ -120,8 +128,8 @@ public class Menu {
             System.out.println();
 
             // Display the game title
-			System.out.println();
 			System.out.println(LINE_SEPARATOR);
+			System.out.println();
             for (String line : GAME_TITLE) {
                 System.out.printf("%" + (SPACE_TILL_TITLE + line.length()) + "s", line);
             }
@@ -218,7 +226,15 @@ public class Menu {
 	 * Shows the leader board with the top 10 scores from the previous plays.
 	 */
 	private void showLeaderBoard() {
-		System.out.println("Show  leader board chosen");
+		List<Score> leaderBoard;
+		if (Files.exists(SCORES_PATH)) {
+			leaderBoard = readScores();
+			if (leaderBoard != null) {
+				for (Score score : leaderBoard) {
+					System.out.println(score.getName() + ": " + score.getScore());
+				}
+			}
+		}
 	}
 	
 	/**
@@ -242,14 +258,87 @@ public class Menu {
 	}
 	
 	/**
-	 * Saves the score with the given details.
+	 * Try to save the a score with the given details to the Leader board.
+	 * The Leader board contains only the top 10 scores. If the new score is not in this
 	 * 
-	 * @param score The score of the player
-	 * @param name The name of the player
-	 * @return if the save was successful or not.
+	 * @param newScore The new score to save.
+	 * @return 	Return false if the System cannot save the score because of some error.
+	 * 			Return true in any other case, even if the score is not in the top 10.
 	 */
-	public boolean saveScore(int score, String name) {
-		System.out.println("TODO: save current score");
-		return false;
+	public boolean saveScore(Score newScore) {
+		List<Score> leaderBoard;
+		// Load the Leader board
+		if (Files.exists(SCORES_PATH)) {
+			leaderBoard = readScores();
+			if (leaderBoard == null) {
+				// Leader board couldn't been loaded
+				return false;
+			}
+		}
+		// If the Leader board not yet exist, create a new one
+		else {
+			leaderBoard = new ArrayList<>(10);
+		}
+
+		// If the Leader board is empty or the new score is in the top 10, save it.
+		if (leaderBoard.size() == 0 || leaderBoard.size() < 10 || leaderBoard.get(leaderBoard.size() - 1).getScore() < newScore.getScore()) {
+			leaderBoard.add(newScore);
+			leaderBoard = leaderBoard.stream()
+					.sorted(Comparator.comparingInt(Score::getScore).reversed()) // Sort the scores in descending order
+					.limit(10) // Save only the top 10 scores
+					.collect(Collectors.toList());
+			try (ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(SCORES_PATH.toFile()))) {
+				// Save the file
+				writer.writeObject(leaderBoard);
+			} catch (FileNotFoundException | SecurityException e) {
+				System.out.println("Access denied: " + e.getMessage());
+				return false;
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				return false;
+			}
+		}
+		// Return true if there wasn't any error.
+		return true;
+	}
+
+	/**
+	 * Load the leader board from the disk.
+	 *
+	 * @return the leader board as a list.
+	 */
+	private List<Score> readScores() {
+		if (!Files.isReadable(SCORES_PATH)) {
+			return null;
+		}
+		ObjectInputStream leaderBoard = null;
+
+		try {
+			// Open the file
+			leaderBoard = new ObjectInputStream(new FileInputStream(SCORES_PATH.toFile()));
+
+			return ((List<Score>) leaderBoard.readObject()).stream()
+					.sorted(Comparator.comparingInt(Score::getScore).reversed())
+					.collect(Collectors.toList());
+		}
+
+		// Catch the errors
+		catch (IOException | ClassCastException e) {
+			System.err.println("The saved scores are corrupt:\n" + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		// Close the file
+		finally {
+			if (leaderBoard != null) {
+				try {
+					leaderBoard.close();
+				} catch (IOException e) {
+					System.err.println("Error while closing file: " + e.getMessage());
+				}
+			}
+		}
+		// Return null if some error occurred.
+		return null;
 	}
 }
