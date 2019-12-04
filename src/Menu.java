@@ -40,8 +40,15 @@ public class Menu {
 	 */
 	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "—");
 
-	private static final String GAME_TITLE = "GAME OF BATTLESHIPS";
-	private static final int SPACE_TILL_TITLE = (int) Math.ceil((LINE_SEPARATOR.length() - GAME_TITLE.length()) / 2f);
+	private static final String[] GAME_TITLE = {
+			"  __ )          |    |    |              |     _)              \n",
+			"  __ \\    _` |  __|  __|  |   _ \\   __|  __ \\   |  __ \\    __| \n",
+			"  |   |  (   |  |    |    |   __/ \\__ \\  | | |  |  |   | \\__ \\ \n",
+			" ____/  \\__,_| \\__| \\__| _| \\___| ____/ _| |_| _|  .__/  ____/ \n",
+			"                                                  _|           \n"
+	};
+
+	private static final int SPACE_TILL_TITLE = (int) Math.floor((LINE_SEPARATOR.length() - GAME_TITLE[0].length()) / 2f);
 
 	/**
 	 * The character which separates the columns of a battlefield.
@@ -104,15 +111,16 @@ public class Menu {
 		// Show the menu until the user exits the program in displayMenu()
 		boolean exit = false;
 		while (!exit) {
-		    System.out.println();
             System.out.println();
-			System.out.println(
-					"  __ )          |    |    |              |     _)              \n" +
-					"  __ \\    _` |  __|  __|  |   _ \\   __|  __ \\   |  __ \\    __| \n" +
-					"  |   |  (   |  |    |    |   __/ \\__ \\  | | |  |  |   | \\__ \\ \n" +
-					" ____/  \\__,_| \\__| \\__| _| \\___| ____/ _| |_| _|  .__/  ____/ \n" +
-					"                                                  _|           \n"
-			);
+
+            // Display the game title
+			System.out.println();
+			System.out.println(LINE_SEPARATOR);
+            for (String line : GAME_TITLE) {
+                System.out.printf("%" + (SPACE_TILL_TITLE + line.length()) + "s", line);
+            }
+			System.out.println(LINE_SEPARATOR);
+			System.out.println();
 
 			exit = menu.displayMenu(in);
 		}
@@ -129,13 +137,6 @@ public class Menu {
 		boolean error = false;
 		// Display the menu until there is an error with the input. Valid input will call return in the loop.
 		while (true) {
-			// Display the game title
-//			System.out.println();
-//			System.out.println(LINE_SEPARATOR);
-//			System.out.printf("%" + (SPACE_TILL_TITLE + GAME_TITLE.length()) + "s\n", GAME_TITLE);
-//			System.out.println(LINE_SEPARATOR);
-//			System.out.println();
-
 			// Display an error message if there was an error.
 			if (error) System.out.println("Valid inputs are numbers listed bellow.");
 
