@@ -1,10 +1,9 @@
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class AI extends Player {
 
-    private Random rn;
+    private final Random rn;
 
     /**
      * The default constructor of the class.

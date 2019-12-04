@@ -18,7 +18,7 @@ public class GameOfBattleships {
 	/**
 	 * The input stream through the user communicates with the program.
 	 */
-	private Scanner in;
+	private final Scanner in;
 
 	/**
 	 * The number of rounds the players played.
@@ -28,12 +28,12 @@ public class GameOfBattleships {
     /**
      * The first player;
      */
-	private Player player1;
+	private final Player player1;
 
     /**
      * The second player
      */
-	private Player player2;
+	private final Player player2;
 	
 	/**
 	 * The player who is firing on the other

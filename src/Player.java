@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 /**
  * Represents a player of the Battleship game.
- * 
+ *
  * @author MiklosMayer
  *
  */
@@ -30,13 +30,13 @@ public class Player {
 	/**
 	 * The remaining, not sank fleet of the player.
 	 */
-	protected List<Ship> fleet;
+	protected final List<Ship> fleet;
 
 	/**
 	 * The battlefield of the player with its ships placed (after placeShips() was called).
 	 * The first dimension of the array is the rows, and the second dimension is the cells inside the rows.
 	 */
-    protected Field[][] battlefield;
+    protected final Field[][] battlefield;
 
 	/**
 	 * The default constructor of the class.
@@ -238,17 +238,15 @@ public class Player {
 	 * 								  The exception contains the input in its message.
 	 */
 	public Position askCoordinate(Scanner in) throws InputMismatchException {
-		while (true) {
-			System.out.println(name + ", what is your target? (e.g. 'A1')");
-			System.out.println(Menu.LINE_SEPARATOR);
-			String input = in.nextLine();
-			System.out.println(Menu.LINE_SEPARATOR);
-			try {
-				return new Position(input);
-			} catch (IllegalArgumentException e) {
-				throw new InputMismatchException(input);
-			}
-		}
+        System.out.println(name + ", what is your target? (e.g. 'A1')");
+        System.out.println(Menu.LINE_SEPARATOR);
+        String input = in.nextLine();
+        System.out.println(Menu.LINE_SEPARATOR);
+        try {
+            return new Position(input);
+        } catch (IllegalArgumentException e) {
+            throw new InputMismatchException(input);
+        }
 	}
 
 	public int takeFire(Position target) {

@@ -59,7 +59,7 @@ public class Menu {
 	public static final char HIT = 'X';
 
 	/**
-	 * The character which is used to display the unhit ships if they are visible.
+	 * The character which is used to display the intact ship parts if they are visible.
 	 */
 	public static final char SHIP = 'O';
 
@@ -93,7 +93,8 @@ public class Menu {
 
 	/**
 	 * The entry point of the game.
-	 * @param args
+	 *
+	 * @param args The arguments the game starts with.
 	 */
 	public static void main(String[] args) {
 		Menu menu = new Menu();
@@ -145,7 +146,7 @@ public class Menu {
 			System.out.println("1) New Game");
 			// Display the Load Game option only if there is a saved game.
 			if (hasSavedGame) System.out.println("2) Load Game");
-			System.out.println("3) Leaderboard");
+			System.out.println("3) Leader board");
 			System.out.println("0) Exit");
 			System.out.println(LINE_SEPARATOR);
 
@@ -165,9 +166,9 @@ public class Menu {
 					case 1:
 						newGame(in);
 						return  false;
-					// Show the leaderboard
+					// Show the leader board
 					case 3:
-						showLeaderboard();
+						showLeaderBoard();
 						return false;
 					// Load the saved game if there is any
 					case 2:
@@ -207,10 +208,10 @@ public class Menu {
 	}
 	
 	/**
-	 * Shows the leaderboard with the top 10 scores from the previous plays.
+	 * Shows the leader board with the top 10 scores from the previous plays.
 	 */
-	private void showLeaderboard() {
-		System.out.println("Show leaderboard chosen");
+	private void showLeaderBoard() {
+		System.out.println("Show  leader board chosen");
 	}
 	
 	/**
