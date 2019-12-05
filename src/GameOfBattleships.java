@@ -24,7 +24,7 @@ public class GameOfBattleships {
 	private int rounds;
 	
 	/**
-	 * The player who is firing on the other
+	 * The player who is firing on the other.
 	 */
 	private Player activePlayer;
 	
@@ -69,6 +69,15 @@ public class GameOfBattleships {
 		end = false;
 	}
 
+    /**
+     * Private constructor to use only for restoring a previous game.
+     *
+     * @param menu The menu of the game which handles e.g. the saving of the game state.
+     * @param in The input stream through the user communicates with the program.
+     * @param rounds The number of rounds the players played.
+     * @param activePlayer The player who is firing on the other.
+     * @param passivePlayer The player who is taking the fire.
+     */
 	private GameOfBattleships(Menu menu, Scanner in, int rounds, Player activePlayer, Player passivePlayer) {
 		this.menu = menu;
 		this.in = in;
@@ -79,11 +88,23 @@ public class GameOfBattleships {
 		end = false;
 	}
 
-	public static GameOfBattleships loadPreviousGame(Menu menu, Scanner in, List<Object> state)
+    /**
+     * Restore a previous game from the given state.
+     *
+     * @param menu The menu of the game which handles e.g. the saving of the game state.
+     * @param in The input stream through the user communicates with the program.
+     * @param state The state of the previous game.
+     *              The first element of the list is the number of rounds.
+     *              The second element of the list is the player who has the turn.
+     *              The third element of the list is the player who waiting for its turn.
+     * @return the restored game.
+     * @throws IllegalArgumentException if the game cannot been restored from the provided state.
+     */
+	public static GameOfBattleships restorePreviousGame(Menu menu, Scanner in, List<Object> state)
 			throws IllegalArgumentException {
-		int rounds = 0;
-		Player activePlayer = null;
-		Player passivePlayer = null;
+		int rounds;
+		Player activePlayer;
+		Player passivePlayer;
 		try {
 			rounds = (int) state.get(0);
 			activePlayer = (Player) state.get(1);
@@ -107,9 +128,12 @@ public class GameOfBattleships {
 
 		// Loop: Firing on each other.
 		while (!end) {
-			menu.saveGame(List.of(rounds, activePlayer, passivePlayer));
-			System.out.println("TODO: what if save unsuccessful?");
-			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+		    // Save the current state of the game
+			if (!menu.saveGame(List.of(rounds, activePlayer, passivePlayer))) {
+			    System.out.println("The game couldn't been saved. Exiting now will cause to lose the current game.");
+            } else {
+                System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+            }
 
 			displayGrids();
 
