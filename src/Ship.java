@@ -1,9 +1,11 @@
+import java.io.Serializable;
+
 /**
  * Represents a ship in the Battleship game.
  *
  * @author MiklosMayer
  */
-public class Ship {
+public class Ship implements Serializable {
 
     /**
      * Used the generate the ids for the ships.

@@ -1,9 +1,11 @@
+import java.io.Serializable;
+
 /**
  * Represents a field on the Battleship game, or cell in the grid of the battlefield.
  *
  * @author MiklosMayer
  */
-public class Field {
+public class Field implements Serializable {
 
     /**
      * The position of the field on the battlefield.

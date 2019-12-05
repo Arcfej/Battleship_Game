@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.function.Predicate;
  * @author MiklosMayer
  *
  */
-public class Player {
+public class Player implements Serializable {
 
 	/**
 	 * The name of the player.

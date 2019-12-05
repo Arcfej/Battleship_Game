@@ -1,6 +1,4 @@
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Represents a Battleship game. Handles all the interactions between the players.
@@ -24,16 +22,6 @@ public class GameOfBattleships {
 	 * The number of rounds the players played.
 	 */
 	private int rounds;
-
-    /**
-     * The first player;
-     */
-	private final Player player1;
-
-    /**
-     * The second player
-     */
-	private final Player player2;
 	
 	/**
 	 * The player who is firing on the other
@@ -44,6 +32,8 @@ public class GameOfBattleships {
 	 * The player who is taking the fire. 
 	 */
 	private Player passivePlayer;
+
+	private boolean shipsPlaced;
 
 	private boolean end;
 
@@ -57,7 +47,7 @@ public class GameOfBattleships {
 		this.menu = menu;
 		this.in = in;
 		rounds = 1;
-		player1 = new AI();
+		activePlayer = new AI();
 
         String name;
         while (true) {
@@ -69,29 +59,55 @@ public class GameOfBattleships {
         }
         System.out.println(Menu.LINE_SEPARATOR);
         System.out.println("Welcome, " + name + "!");
-		player2 = new Player(name);
+		passivePlayer = new Player(name);
 
-        activePlayer = player1;
-        passivePlayer = player2;
-
-        // Randomize who start
+        // Randomize who starts
         if ((new Random()).nextInt(2) == 0) {
             switchPlayers();
         }
+        shipsPlaced = false;
 		end = false;
+	}
+
+	private GameOfBattleships(Menu menu, Scanner in, int rounds, Player activePlayer, Player passivePlayer) {
+		this.menu = menu;
+		this.in = in;
+		this.rounds = rounds;
+		this.activePlayer = activePlayer;
+		this.passivePlayer = passivePlayer;
+		shipsPlaced = true;
+		end = false;
+	}
+
+	public static GameOfBattleships loadPreviousGame(Menu menu, Scanner in, List<Object> state)
+			throws IllegalArgumentException {
+		int rounds = 0;
+		Player activePlayer = null;
+		Player passivePlayer = null;
+		try {
+			rounds = (int) state.get(0);
+			activePlayer = (Player) state.get(1);
+			passivePlayer = (Player) state.get(2);
+		} catch (ClassCastException e) {
+			throw new IllegalArgumentException("Error: The saved game is corrupt.");
+		}
+		return new GameOfBattleships(menu, in, rounds, activePlayer, passivePlayer);
 	}
 	
 	/**
 	 * The whole cycle of an entire game, from placing the ships to winning the game.
 	 */
 	public void play() {
-		// Placing the ships.
-		activePlayer.placeShips(this, in);
-		passivePlayer.placeShips(this, in);
+		if (!shipsPlaced) {
+			// Placing the ships.
+			activePlayer.placeShips(this, in);
+			passivePlayer.placeShips(this, in);
+			shipsPlaced = true;
+		}
 
 		// Loop: Firing on each other.
 		while (!end) {
-			menu.saveGame();
+			menu.saveGame(List.of(rounds, activePlayer, passivePlayer));
 			System.out.println("TODO: what if save unsuccessful?");
 			System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
 
@@ -180,7 +196,7 @@ public class GameOfBattleships {
 	 * @return the generated line as a String
 	 */
 	private String generateTableRowSeparator() {
-		String lineSeparator = "——————";
+		String lineSeparator = "â€”â€”â€”â€”â€”â€”";
 		String[] cells = new String[Menu.NUMBER_OF_COLUMNS];
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
 	    	cells[i] = lineSeparator;

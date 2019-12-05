@@ -1,6 +1,7 @@
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -38,7 +39,7 @@ public class Menu {
 	/**
 	 * Used between lines to separate contents in the console.
 	 */
-	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "—");
+	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "â€”");
 
 	private static final String[] GAME_TITLE = {
 			"  __ )          |    |    |              |     _)              \n",
@@ -58,7 +59,7 @@ public class Menu {
 	/**
 	 * The character which is used to display the missed shots.
 	 */
-	public static final char MISSED_SHOT = '—';
+	public static final char MISSED_SHOT = 'â€”';
 
 	/**
 	 * The character which is used to display the hits on a ship.
@@ -220,7 +221,7 @@ public class Menu {
 	 * 
 	 * @return if the save was successful or not.
 	 */
-	public boolean saveGame() {
+	public boolean saveGame(List<Object> state) {
 		System.out.println("TODO: save the game");
 		return false;
 	}
