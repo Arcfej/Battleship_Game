@@ -1,7 +1,5 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -140,6 +138,7 @@ public class Menu {
 
 			exit = menu.displayMenu(in);
 		}
+		System.out.println("Goodbye!");
 	}
 	
 	/**
@@ -301,8 +300,22 @@ public class Menu {
 	 * @return if the deletion was successful or not.
 	 */
 	public boolean deleteSavedGame() {
-		System.out.println("TODO: delete the saved game");
-		return false;
+		try {
+			Files.delete(SAVE_PATH);
+			hasSavedGame = false;
+			return true;
+		} catch (NoSuchFileException e) {
+			// The file is not even exists, there's nothing to delete. Return true.
+			hasSavedGame = false;
+			return true;
+		} catch (DirectoryNotEmptyException e) {
+			System.err.println("Possibly corrupt saved file. The path points to a directory, not a file.\n" + e.getMessage());
+		} catch (SecurityException e) {
+			System.err.println("Access denied:\n" + e.getMessage());
+		} catch (IOException e) {
+			System.err.println("Error during deleting the saved file:\n" + e.getMessage());
+		}
+		return false; // If there was an error.
 	}
 	
 	/**

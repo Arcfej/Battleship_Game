@@ -2,7 +2,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 /**
  * Represents a Battleship game. Handles all the interactions between the players.
@@ -37,6 +36,9 @@ public class GameOfBattleships {
 	 */
 	private Player passivePlayer;
 
+    /**
+     * True if the ships have already been placed on the battlefields.
+     */
     private boolean shipsPlaced;
 
 	/**
@@ -333,7 +335,6 @@ public class GameOfBattleships {
 			break;
 		}
 		menu.deleteSavedGame();
-		System.out.println("TODO: what if delete unsuccessful?");
 	}
 
 	/**
