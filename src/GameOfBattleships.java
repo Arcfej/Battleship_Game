@@ -182,9 +182,9 @@ public class GameOfBattleships {
 	public void displayGrids() {
 		// TODO add argument who should be displayed first
 		// Numbers which help positioning the labels above the tables to the center.
-	    final int spaceTillFirstLabel = (int) Math.ceil((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
+	    final int spaceTillFirstLabel = (int) Math.floor((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
 	    final int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();
-	    final int spaceTillSecondLabel = (int) Math.ceil((Menu.TABLE_WIDTH - activePlayer.getName().length()) / 2f);
+	    final int spaceTillSecondLabel = (int) Math.floor((Menu.TABLE_WIDTH - activePlayer.getName().length()) / 2f);
 	    final int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillSecondLabel + activePlayer.getName().length());
 
 	    // Display the labels above the tables
@@ -195,6 +195,14 @@ public class GameOfBattleships {
 				activePlayer.getName().toUpperCase()
 		);
 	    System.out.println();
+
+	    // Display the player's actual scores
+		System.out.print(
+				generateHeaderRow(" Hits: " + passivePlayer.getHits(), " Misses: " + passivePlayer.getMisses())
+				+ " ".repeat(Menu.GAP) +
+				generateHeaderRow(" Hits: " + activePlayer.getHits(), " Misses: " + activePlayer.getMisses()) + "\n"
+		);
+		System.out.println();
 
 	    // First line with the column indexes
 	    Character[] columnIndexes = new Character[Menu.NUMBER_OF_COLUMNS];
@@ -221,6 +229,14 @@ public class GameOfBattleships {
 			System.out.println(generateTableRowSeparator() + " ".repeat(Menu.GAP) + generateTableRowSeparator());
         }
         System.out.println();
+	}
+
+	private String generateHeaderRow(String firstCell, String secondCell) {
+		return String.format(
+				"|%-" + (int) (Menu.TABLE_WIDTH / 2f - 2) + "s|%-" + ((int) Math.ceil(Menu.TABLE_WIDTH / 2f) - 1) + "s|",
+				firstCell,
+				secondCell
+		);
 	}
 
 	/**
