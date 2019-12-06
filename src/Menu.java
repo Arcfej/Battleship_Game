@@ -41,7 +41,7 @@ public class Menu {
 	/**
 	 * Used between lines to separate contents in the console.
 	 */
-	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "â€”");
+	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "—");
 
 	/**
 	 * The title of the game line by line.
@@ -67,7 +67,7 @@ public class Menu {
 	/**
 	 * The character which is used to display the missed shots.
 	 */
-	public static final char MISSED_SHOT = 'â€”';
+	public static final char MISSED_SHOT = '—';
 
 	/**
 	 * The character which is used to display the hits on a ship.

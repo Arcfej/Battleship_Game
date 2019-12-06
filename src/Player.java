@@ -69,7 +69,6 @@ public class Player implements Serializable {
 	 * @param in The input stream through the user communicates with the program.
 	 */
 	public void placeShips(GameOfBattleships game, Scanner in) {
-		// TODO save the state after every successful placement?
 		String error = ""; // Used for displaying error messages.
 
 		// Get the input for the 1 x 4 long, 2 x 3 long, 3 x 2 long and 4 x 1 long ships
@@ -235,6 +234,7 @@ public class Player implements Serializable {
 	/**
 	 * Ask for coordinates from the active player to fire upon.
 	 *
+	 * @param in The input stream through the user communicates with the program.
 	 * @return the position of the target.
 	 * @throws InputMismatchException when the input provided by the user is not a coordinate.
 	 * 								  The exception contains the input in its message.

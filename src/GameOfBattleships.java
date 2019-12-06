@@ -247,9 +247,9 @@ public class GameOfBattleships {
 	 */
 	private String generateTableHeadsSeparator() {
 		return String.format("|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|%" + Menu.GAP + "s|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|",
-				"â€”".repeat(Menu.TABLE_WIDTH),
+				"—".repeat(Menu.TABLE_WIDTH),
 				" ".repeat(Menu.GAP),
-				"â€”".repeat(Menu.TABLE_WIDTH));
+				"—".repeat(Menu.TABLE_WIDTH));
 	}
 
 	/**
