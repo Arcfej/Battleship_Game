@@ -247,9 +247,9 @@ public class GameOfBattleships {
 	 */
 	private String generateTableHeadsSeparator() {
 		return String.format("|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|%" + Menu.GAP + "s|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|",
-				"—".repeat(Menu.TABLE_WIDTH),
+				"-".repeat(Menu.TABLE_WIDTH),
 				" ".repeat(Menu.GAP),
-				"—".repeat(Menu.TABLE_WIDTH));
+				"-".repeat(Menu.TABLE_WIDTH));
 	}
 
 	/**
@@ -273,7 +273,7 @@ public class GameOfBattleships {
 	 * @return the generated line as a String
 	 */
 	private String generateTableRowSeparator() {
-		String lineSeparator = "â€”".repeat(Menu.COLUMN_WIDTH);
+		String lineSeparator = "-".repeat(Menu.COLUMN_WIDTH);
 		String[] cells = new String[Menu.NUMBER_OF_COLUMNS];
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
 	    	cells[i] = lineSeparator;
