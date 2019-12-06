@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Represents a position in the battlefield.
  */
-public class Position {
+public class Position implements Serializable {
 
     /**
      * The row-index of the position

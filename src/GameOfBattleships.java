@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -25,19 +26,9 @@ public class GameOfBattleships {
 	 * The number of rounds the players played.
 	 */
 	private int rounds;
-
-    /**
-     * The first player;
-     */
-	private final Player player1;
-
-    /**
-     * The second player
-     */
-	private final Player player2;
 	
 	/**
-	 * The player who is firing on the other
+	 * The player who is firing on the other.
 	 */
 	private Player activePlayer;
 	
@@ -45,6 +36,8 @@ public class GameOfBattleships {
 	 * The player who is taking the fire. 
 	 */
 	private Player passivePlayer;
+
+    private boolean shipsPlaced;
 
 	/**
 	 * True if the play ended. (Some of the player sank all the ships of the other.)
@@ -61,7 +54,7 @@ public class GameOfBattleships {
 		this.menu = menu;
 		this.in = in;
 		rounds = 1;
-		player1 = new AI();
+		activePlayer = new AI();
 
 		// Ask a name from the human player.
         String name;
@@ -74,35 +67,81 @@ public class GameOfBattleships {
         }
         System.out.println(Menu.LINE_SEPARATOR);
         System.out.println("Welcome, " + name + "!");
-
-		player2 = new Player(name);
-
-        activePlayer = player1;
-        passivePlayer = player2;
+		passivePlayer = new Player(name);
 
         // Randomize who starts
         if ((new Random()).nextInt(2) == 0) {
             switchPlayers();
         }
+        shipsPlaced = false;
 		end = false;
 	}
-	
+
+    /**
+     * Private constructor to use only for restoring a previous game.
+     *
+     * @param menu The menu of the game which handles e.g. the saving of the game state.
+     * @param in The input stream through the user communicates with the program.
+     * @param rounds The number of rounds the players played.
+     * @param activePlayer The player who is firing on the other.
+     * @param passivePlayer The player who is taking the fire.
+     */
+	private GameOfBattleships(Menu menu, Scanner in, int rounds, Player activePlayer, Player passivePlayer) {
+		this.menu = menu;
+		this.in = in;
+		this.rounds = rounds;
+		this.activePlayer = activePlayer;
+		this.passivePlayer = passivePlayer;
+		shipsPlaced = true;
+		end = false;
+	}
+
+    /**
+     * Restore a previous game from the given state.
+     *
+     * @param menu The menu of the game which handles e.g. the saving of the game state.
+     * @param in The input stream through the user communicates with the program.
+     * @param state The state of the previous game.
+     *              The first element of the list is the number of rounds.
+     *              The second element of the list is the player who has the turn.
+     *              The third element of the list is the player who waiting for its turn.
+     * @return the restored game.
+     * @throws IllegalArgumentException if the game cannot been restored from the provided state.
+     */
+	public static GameOfBattleships restorePreviousGame(Menu menu, Scanner in, List<Object> state)
+			throws IllegalArgumentException {
+		int rounds;
+		Player activePlayer;
+		Player passivePlayer;
+		try {
+			rounds = (int) state.get(0);
+			activePlayer = (Player) state.get(1);
+			passivePlayer = (Player) state.get(2);
+		} catch (ClassCastException e) {
+			throw new IllegalArgumentException("Error: The saved game is corrupt.");
+		}
+		return new GameOfBattleships(menu, in, rounds, activePlayer, passivePlayer);
+	}
+
 	/**
 	 * The whole cycle of an entire game, from placing the ships to winning the game.
 	 */
 	public void play() {
-		// Placing the ships.
-		activePlayer.placeShips(this, in);
-		passivePlayer.placeShips(this, in);
+		if (!shipsPlaced) {
+			// Placing the ships.
+			activePlayer.placeShips(this, in);
+			passivePlayer.placeShips(this, in);
+			shipsPlaced = true;
+		}
 
 		// Loop: Firing on each other.
 		while (!end) {
-			// Save the game at every start of the turns.
-			if (menu.saveGame()) {
-				System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
-			} else {
-				System.out.println("TODO: what if save unsuccessful?");
-			}
+		    // Save the current state of the game
+			if (!menu.saveGame(List.of(rounds, activePlayer, passivePlayer))) {
+			    System.out.println("The game couldn't been saved. Exiting now will cause to lose the current game.");
+            } else {
+                System.out.println("The game is saved. You can exit to the Main Menu by typing in 'Exit'");
+            }
 
 			displayGrids();
 
@@ -133,7 +172,6 @@ public class GameOfBattleships {
 			}
 		}
 		endGame();
-
 	}
 
 	/**
@@ -189,7 +227,7 @@ public class GameOfBattleships {
 	 * @return the generated line as a String
 	 */
 	private String generateTableRowSeparator() {
-		String lineSeparator = "——————";
+		String lineSeparator = "â€”â€”â€”â€”â€”â€”";
 		String[] cells = new String[Menu.NUMBER_OF_COLUMNS];
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
 	    	cells[i] = lineSeparator;

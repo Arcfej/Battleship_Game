@@ -2,9 +2,11 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * The main menu and entry point of the game. It handles all the interactions between the user(s) and the computer.
@@ -41,7 +43,7 @@ public class Menu {
 	/**
 	 * Used between lines to separate contents in the console.
 	 */
-	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "—");
+	public static final String LINE_SEPARATOR = String.format("%" + (TABLE_WIDTH * 2 + GAP) + "s", "").replace(" ", "â€”");
 
 	/**
 	 * The title of the game line by line.
@@ -67,7 +69,7 @@ public class Menu {
 	/**
 	 * The character which is used to display the missed shots.
 	 */
-	public static final char MISSED_SHOT = '—';
+	public static final char MISSED_SHOT = 'â€”';
 
 	/**
 	 * The character which is used to display the hits on a ship.
@@ -93,7 +95,7 @@ public class Menu {
 	 * The file path to the top scores.
 	 */
 	private static final Path SCORES_PATH = Paths.get(".scores.txt");
-	
+
 	/**
 	 * The current game.
 	 */
@@ -219,7 +221,37 @@ public class Menu {
 	 * @param in The input stream through the user communicates with the program.
 	 */
 	private void loadGame(Scanner in) {
-		System.out.println("Load game chosen");
+        if (!Files.isReadable(SAVE_PATH)) {
+            System.out.println("Save don't exists");
+            return;
+        }
+        ObjectInputStream savedState = null;
+
+        try {
+            // Open the file
+            savedState = new ObjectInputStream(new FileInputStream(SAVE_PATH.toFile()));
+            List<Object> state = new ArrayList<>(((List<Serializable>) savedState.readObject()));
+            // Restore the previous game
+            GameOfBattleships game = GameOfBattleships.restorePreviousGame(this, in, state);
+            game.play();
+        }
+
+        // Catch the errors
+        catch (IOException | ClassCastException e) {
+            System.err.println("The saved scores are corrupt:\n" + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // Close the file
+        finally {
+            if (savedState != null) {
+                try {
+                    savedState.close();
+                } catch (IOException e) {
+                    System.err.println("Error while closing file: " + e.getMessage());
+                }
+            }
+        }
 	}
 	
 	/**
@@ -239,12 +271,28 @@ public class Menu {
 	
 	/**
 	 * Saves the current state of the game.
-	 * 
+	 *
+     * @param state The state of the game to save.
 	 * @return if the save was successful or not.
 	 */
-	public boolean saveGame() {
-		System.out.println("TODO: save the game");
-		return false;
+	public boolean saveGame(List<Serializable> state) {
+		if (!Files.exists(SAVE_PATH)) {
+			SAVE_PATH.toFile().getParentFile().mkdirs();
+		}
+        try (ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(SAVE_PATH.toFile()))) {
+            // Save the file
+            writer.writeObject(state);
+            // Return true if there wasn't any error.
+            hasSavedGame = true;
+            return true;
+        } catch (NotSerializableException e) {
+            System.out.println("The state for save is not serializable.");
+        } catch (FileNotFoundException | SecurityException e) {
+            System.err.println("Access denied: " + e.getMessage());
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return false;
 	}
 	
 	/**
