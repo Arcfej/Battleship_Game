@@ -209,6 +209,9 @@ public class GameOfBattleships {
         System.out.println();
 	}
 
+	/**
+	 * Display the head of the battleships. Contains the name of the players and their scores.
+	 */
 	private void displayTableHeads() {
 		// Numbers which help positioning the labels above the tables to the center.
 		final int spaceTillFirstLabel = (int) Math.floor((Menu.TABLE_WIDTH - 2 - passivePlayer.getName().length()) / 2f);
@@ -237,6 +240,11 @@ public class GameOfBattleships {
 		System.out.println();
 	}
 
+	/**
+	 * Generate a line separator for the heads of the two tables.
+	 *
+	 * @return the generated row separator as String
+	 */
 	private String generateTableHeadsSeparator() {
 		return String.format("|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|%" + Menu.GAP + "s|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|",
 				"—".repeat(Menu.TABLE_WIDTH),
@@ -244,6 +252,13 @@ public class GameOfBattleships {
 				"—".repeat(Menu.TABLE_WIDTH));
 	}
 
+	/**
+	 * Generate a row for one table's head.
+	 *
+	 * @param firstCell The data to display in the first cell.
+	 * @param secondCell The data to display in the second cell.
+	 * @return the generated table row.
+	 */
 	private String generateHeaderRow(String firstCell, String secondCell) {
 		return String.format(
 				"|%-" + (int) (Menu.TABLE_WIDTH / 2f - 2) + "s|%-" + ((int) Math.ceil(Menu.TABLE_WIDTH / 2f) - 1) + "s|",
