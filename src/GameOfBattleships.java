@@ -180,29 +180,7 @@ public class GameOfBattleships {
 	 * Displays the battlefields to the user(s).
 	 */
 	public void displayGrids() {
-		// TODO add argument who should be displayed first
-		// Numbers which help positioning the labels above the tables to the center.
-	    final int spaceTillFirstLabel = (int) Math.floor((Menu.TABLE_WIDTH - passivePlayer.getName().length()) / 2f);
-	    final int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();
-	    final int spaceTillSecondLabel = (int) Math.floor((Menu.TABLE_WIDTH - activePlayer.getName().length()) / 2f);
-	    final int secondPosition = (Menu.TABLE_WIDTH - firstPosition + Menu.GAP + spaceTillSecondLabel + activePlayer.getName().length());
-
-	    // Display the labels above the tables
-	    System.out.println();
-	    System.out.printf(
-	    		"%" + firstPosition + "s%"+ secondPosition + "s\n",
-				passivePlayer.getName().toUpperCase(),
-				activePlayer.getName().toUpperCase()
-		);
-	    System.out.println();
-
-	    // Display the player's actual scores
-		System.out.print(
-				generateHeaderRow(" Hits: " + passivePlayer.getHits(), " Misses: " + passivePlayer.getMisses())
-				+ " ".repeat(Menu.GAP) +
-				generateHeaderRow(" Hits: " + activePlayer.getHits(), " Misses: " + activePlayer.getMisses()) + "\n"
-		);
-		System.out.println();
+		displayTableHeads();
 
 	    // First line with the column indexes
 	    Character[] columnIndexes = new Character[Menu.NUMBER_OF_COLUMNS];
@@ -231,6 +209,41 @@ public class GameOfBattleships {
         System.out.println();
 	}
 
+	private void displayTableHeads() {
+		// Numbers which help positioning the labels above the tables to the center.
+		final int spaceTillFirstLabel = (int) Math.floor((Menu.TABLE_WIDTH - 2 - passivePlayer.getName().length()) / 2f);
+		final int firstPosition = spaceTillFirstLabel + passivePlayer.getName().length();
+		final int spaceTillSecondLabel = (int) Math.floor((Menu.TABLE_WIDTH - 2 - activePlayer.getName().length()) / 2f);
+		final int secondPosition = spaceTillSecondLabel + activePlayer.getName().length();
+
+
+		// Display the labels above the tables
+		System.out.println();
+		System.out.println(generateTableHeadsSeparator());
+		System.out.printf(
+				"|%" + firstPosition + "s" + " ".repeat(Menu.TABLE_WIDTH - firstPosition - 2) + "|" + " ".repeat(Menu.GAP) + "|%"+ secondPosition + "s" + " ".repeat(Menu.TABLE_WIDTH - secondPosition - 2) + "|\n",
+				passivePlayer.getName().toUpperCase(),
+				activePlayer.getName().toUpperCase()
+		);
+
+		System.out.println(generateTableHeadsSeparator());
+		// Display the player's current scores
+		System.out.print(generateHeaderRow(
+				" Hits: " + passivePlayer.getHits(), " Misses: " + passivePlayer.getMisses())
+				+ " ".repeat(Menu.GAP) +
+				generateHeaderRow(" Hits: " + activePlayer.getHits(), " Misses: " + activePlayer.getMisses()) + "\n"
+		);
+		System.out.println(generateTableHeadsSeparator());
+		System.out.println();
+	}
+
+	private String generateTableHeadsSeparator() {
+		return String.format("|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|%" + Menu.GAP + "s|%" + (Menu.TABLE_WIDTH - 2) + "." + (Menu.TABLE_WIDTH - 2) + "s|",
+				"—".repeat(Menu.TABLE_WIDTH),
+				" ".repeat(Menu.GAP),
+				"—".repeat(Menu.TABLE_WIDTH));
+	}
+
 	private String generateHeaderRow(String firstCell, String secondCell) {
 		return String.format(
 				"|%-" + (int) (Menu.TABLE_WIDTH / 2f - 2) + "s|%-" + ((int) Math.ceil(Menu.TABLE_WIDTH / 2f) - 1) + "s|",
@@ -245,7 +258,7 @@ public class GameOfBattleships {
 	 * @return the generated line as a String
 	 */
 	private String generateTableRowSeparator() {
-		String lineSeparator = "——————";
+		String lineSeparator = "—".repeat(Menu.COLUMN_WIDTH);
 		String[] cells = new String[Menu.NUMBER_OF_COLUMNS];
 	    for (int i = 0; i < Menu.NUMBER_OF_COLUMNS; i++) {
 	    	cells[i] = lineSeparator;
